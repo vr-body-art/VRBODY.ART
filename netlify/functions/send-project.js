@@ -26,7 +26,13 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Champs requis manquants' }) };
   }
 
-  const emailHtml = '<h2>Nouvelle demande de projet</h2><p><strong>Prenom:</strong> ' + prenom + '</p><p><strong>Email:</strong> ' + email + '</p><p><strong>Zone:</strong> ' + (zone || 'Non precisee') + '</p><p><strong>Description:</strong></p><p>' + description + '</p>' + (attachments.length ? '<p><strong>Images jointes:</strong> ' + attachments.length + '</p>' : '');
+  let emailHtml = '<h2>Nouvelle demande de projet</h2><p><strong>Prenom:</strong> ' + prenom + '</p><p><strong>Email:</strong> ' + email + '</p><p><strong>Zone:</strong> ' + (zone || 'Non precisee') + '</p><p><strong>Description:</strong></p><p>' + description + '</p>';
+    if (lienReference) {
+      emailHtml += '<p><strong>Lien de reference:</strong> <a href="' + lienReference + '">' + lienReference + '</a></p>';
+    }
+    if (attachments.length) {
+      emailHtml += '<p><strong>Images jointes:</strong> ' + attachments.length + '</p>';
+    }
 
   const resendAttachments = attachments.map((a) => ({
     filename: a.filename,
