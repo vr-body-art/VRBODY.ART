@@ -1,0 +1,13 @@
+[build]
+  functions = "netlify/functions"
+
+  [[redirects]]
+    from = "/api/send-project"
+      to = "/.netlify/functions/send-project"
+        status = 200
+
+        [[redirects]]
+          from = "/api/flash-webhook"
+            to = "/.netlify/functions/flash-webhook"
+              status = 200
+              
