@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conditions générales de vente — VR Body Art</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d0a; --panel:#12140f; --panel-2:#161a13;
+    --gold:#c9a227; --gold-soft:#e8c874; --green:#1f4d3a;
+    --ink:#f1ecdf; --muted:#8b9088; --line:rgba(201,162,39,0.22);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--ink); font-family:'Inter', sans-serif; font-weight:300;}
+  h1,h2{font-family:'Fraunces', serif; font-weight:400;}
+  a{color:inherit; text-decoration:none;}
+  .eyebrow{font-family:'Space Mono', monospace; font-size:0.7rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--gold);}
+
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:22px 40px; backdrop-filter:blur(10px);
+    background:linear-gradient(to bottom, rgba(11,13,10,0.9), rgba(11,13,10,0.6));
+    border-bottom:1px solid var(--line);
+  }
+  .logo{font-family:'Fraunces', serif; font-size:1.15rem; letter-spacing:0.08em;}
+  .logo em{color:var(--gold); font-style:normal;}
+
+  .page-hero{padding:170px 40px 60px; text-align:center; border-bottom:1px solid var(--line);}
+  .page-hero h1{font-size:clamp(2rem,4.5vw,2.8rem); margin-top:16px;}
+  .page-hero p{color:var(--muted); max-width:52ch; margin:16px auto 0; font-size:0.95rem; line-height:1.7;}
+
+  .wrap{max-width:820px; margin:0 auto; padding:80px 40px 100px;}
+  .back-link{
+    display:inline-flex; align-items:center; gap:8px; margin-bottom:50px;
+    font-family:'Space Mono', monospace; font-size:0.75rem; color:var(--muted); transition:color 0.25s;
+  }
+  .back-link:hover{color:var(--gold-soft);}
+
+  .cgv-item{border-bottom:1px solid var(--line); padding:34px 0;}
+  .cgv-item:first-child{padding-top:0;}
+  .cgv-num{
+    font-family:'Space Mono', monospace; font-size:0.68rem; letter-spacing:0.15em;
+    color:var(--gold); text-transform:uppercase; margin-bottom:10px; display:block;
+  }
+  .cgv-item h2{font-size:1.25rem; margin-bottom:14px; color:var(--gold-soft);}
+  .cgv-item p{color:var(--muted); line-height:1.85; font-size:0.94rem; margin-bottom:10px;}
+  .cgv-item p:last-child{margin-bottom:0;}
+  .cgv-item strong{color:var(--ink); font-weight:500;}
+
+  footer{padding:60px 40px 40px; text-align:center; border-top:1px solid var(--line);}
+  footer p{color:var(--muted); font-size:0.82rem; margin-bottom:6px;}
+
+  @media (max-width:700px){
+    header{padding:18px 22px;}
+    .page-hero{padding:130px 22px 50px;}
+    .wrap{padding:60px 22px 70px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">VR <em>BODY ART</em></a>
+</header>
+
+<section class="page-hero">
+  <div class="eyebrow">Informations légales</div>
+  <h1>Conditions générales de vente</h1>
+  <p>À lire avant toute réservation d'un flash ou d'un projet personnalisé — clair, court, sans surprise.</p>
+</section>
+
+<div class="wrap">
+  <a href="/" class="back-link">← Retour à l'accueil</a>
+
+  <div class="cgv-item">
+    <span class="cgv-num">01</span>
+    <h2>Acompte & réservation</h2>
+    <p>Toute réservation (flash ou projet personnalisé) est confirmée par le règlement d'un <strong>acompte non remboursable</strong>. Cet acompte est déduit du prix total le jour du rendez-vous.</p>
+  </div>
+
+  <div class="cgv-item">
+    <span class="cgv-num">02</span>
+    <h2>Annulation & report</h2>
+    <p>Tout rendez-vous peut être annulé ou reporté <strong>jusqu'à 24h avant</strong> l'heure prévue, sans frais supplémentaires — l'acompte reste valable pour une nouvelle date.</p>
+    <p>Passé ce délai de 24h, ou en cas d'absence le jour du rendez-vous, <strong>l'acompte est définitivement perdu</strong> et une nouvelle réservation (avec nouvel acompte) sera nécessaire.</p>
+  </div>
+
+  <div class="cgv-item">
+    <span class="cgv-num">03</span>
+    <h2>Résultat & cicatrisation</h2>
+    <p>Le rendu final d'un tatouage évolue pendant la cicatrisation — <strong>le résultat définitif ne s'apprécie qu'une fois la peau totalement guérie</strong> (comptez plusieurs semaines). Les couleurs, contrastes et détails peuvent varier légèrement selon le grain de peau, la zone du corps et le suivi des consignes de cicatrisation.</p>
+    <p>Un mauvais entretien pendant la cicatrisation peut affecter le rendu final et n'engage pas la responsabilité du studio.</p>
+  </div>
+
+  <div class="cgv-item">
+    <span class="cgv-num">04</span>
+    <h2>Âge minimum</h2>
+    <p>Le tatouage et le piercing sont réalisés uniquement sur des personnes <strong>majeures</strong>, sur présentation d'une pièce d'identité valide.</p>
+  </div>
+
+  <div class="cgv-item">
+    <span class="cgv-num">05</span>
+    <h2>Contre-indications & santé</h2>
+    <p>Certaines conditions de santé (grossesse, allaitement, troubles de la coagulation, traitements en cours, allergies connues aux encres ou métaux) peuvent contre-indiquer une séance. Merci de nous en informer avant le rendez-vous — le studio se réserve le droit de reporter ou refuser une prestation par précaution.</p>
+  </div>
+
+  <div class="cgv-item">
+    <span class="cgv-num">06</span>
+    <h2>Flashs — pièces uniques</h2>
+    <p>Chaque flash présenté sur le site est une <strong>pièce unique</strong>, réalisée une seule fois. Une fois réservé et payé, un flash n'est plus disponible pour un autre client.</p>
+  </div>
+
+  <div class="cgv-item">
+    <span class="cgv-num">07</span>
+    <h2>Droit à l'image</h2>
+    <p>Sauf refus explicite de votre part communiqué avant la séance, les photos de votre tatouage ou piercing (une fois cicatrisé) pourront être utilisées à des fins de portfolio, sur le site et les réseaux sociaux du studio.</p>
+  </div>
+
+  <div class="cgv-item">
+    <span class="cgv-num">08</span>
+    <h2>Projets personnalisés</h2>
+    <p>Pour un projet sur-mesure, le devis communiqué après échange est valable 30 jours. Toute modification majeure du projet après validation peut entraîner un ajustement du tarif, communiqué avant la séance.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">VR <em>BODY ART</em></div>
+  <p>vraimbaud23@gmail.com</p>
+</footer>
+
+</body>
+</html>
