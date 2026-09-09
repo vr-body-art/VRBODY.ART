@@ -18,6 +18,8 @@ exports.handler = async (event) => {
     const prenom = data.prenom;
     const email = data.email;
     const zone = data.zone;
+    const taille = data.taille;
+    const disponibilites = data.disponibilites;
     const description = data.description;
     const lienReference = data.lienReference;
     const attachments = Array.isArray(data.attachments) ? data.attachments : [];
@@ -26,7 +28,11 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Champs requis manquants' }) };
   }
 
-  let emailHtml = '<h2>Nouvelle demande de projet</h2><p><strong>Prenom:</strong> ' + prenom + '</p><p><strong>Email:</strong> ' + email + '</p><p><strong>Zone:</strong> ' + (zone || 'Non precisee') + '</p><p><strong>Description:</strong></p><p>' + description + '</p>';
+  let emailHtml = '<h2>Nouvelle demande de projet</h2><p><strong>Prenom:</strong> ' + prenom + '</p><p><strong>Email:</strong> ' + email + '</p><p><strong>Zone:</strong> ' + (zone || 'Non precisee') + '</p><p><strong>Taille:</strong> ' + (taille ? taille + ' cm' : 'Non precisee') + '</p>';
+    if (disponibilites) {
+      emailHtml += '<p><strong>Disponibilites:</strong> ' + disponibilites + '</p>';
+    }
+    emailHtml += '<p><strong>Description:</strong></p><p>' + description + '</p>';
     if (lienReference) {
       emailHtml += '<p><strong>Lien de reference:</strong> <a href="' + lienReference + '">' + lienReference + '</a></p>';
     }
