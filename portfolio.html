@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio — VR Body Art</title>
+<title>Portfolio — Réalisations tatouage | VR Body Art</title>
+<meta name="description" content="Découvrez les réalisations du studio VR Body Art à Clermont (Oise) : tatouages japonais, fine line, pièces commémoratives et créations sur-mesure.">
+<link rel="canonical" href="https://vrbody-art.netlify.app/portfolio">
+<meta property="og:title" content="Portfolio — VR Body Art">
+<meta property="og:description" content="Découvrez les réalisations du studio VR Body Art à Clermont (Oise) : tatouages japonais, fine line, pièces commémoratives et créations sur-mesure.">
+<meta property="og:image" content="https://vrbody-art.netlify.app/og-image.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vrbody-art.netlify.app/portfolio">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -188,7 +200,9 @@
     <a href="/#avis">Avis</a>
     <a href="/flash.html">Flash</a>
     <a href="/#faq">FAQ</a>
-    <a href="/cgv.html">CGV</a>
+    <a href="/cgv">CGV</a>
+    <a href="/rgpd">Confidentialité</a>
+    <a href="/cgu">CGU</a>
   </div>
   <div class="foot-social">
     <a href="https://instagram.com/vr.body.art" target="_blank">@vr.body.art</a>
@@ -204,9 +218,20 @@
 </div>
 <script>
 const portfolioImages = ["/accueil-04.jpg", "/accueil-05.jpg", "/accueil-06.jpg", "/accueil-07.jpg", "/accueil-08.jpg", "/accueil-09.jpg", "/accueil-10.jpg", "/accueil-11.jpg", "/accueil-12.jpg"];
+const portfolioAlts = [
+  'Tatouage dragon japonais avec kanji rouge sur la main',
+  'Tatouage commémoratif fine line sur avant-bras, hommage à un père',
+  'Manche japonaise irezumi avec tête de dragon et carpe koï',
+  'Tatouage floral fine line de pivoines sur avant-bras',
+  'Tatouage blackwork botanique abstrait sur avant-bras',
+  'Tatouage fine line botanique sur le sternum',
+  'Tatouage de deux hirondelles en vol sur avant-bras',
+  'Tatouages de prénoms en écriture cursive sur avant-bras',
+  'Tatouage tête de créature style blackwork',
+];
 const pg = document.getElementById('pg');
 portfolioImages.forEach((src, i) => {
-  pg.innerHTML += `<div class="p-card" data-i="${i}"><img src="${src}" alt="Tatouage ${i+1}"></div>`;
+  pg.innerHTML += `<div class="p-card" data-i="${i}"><img src="${src}" alt="${portfolioAlts[i]}"></div>`;
 });
 
 const lightbox = document.getElementById('lightbox');
@@ -216,12 +241,14 @@ let currentIndex = 0;
 function openLightbox(i){
   currentIndex = i;
   lbImg.src = portfolioImages[currentIndex];
+  lbImg.alt = portfolioAlts[currentIndex];
   lightbox.classList.add('open');
 }
 function closeLightbox(){ lightbox.classList.remove('open'); }
 function nav(delta){
   currentIndex = (currentIndex + delta + portfolioImages.length) % portfolioImages.length;
   lbImg.src = portfolioImages[currentIndex];
+  lbImg.alt = portfolioAlts[currentIndex];
 }
 
 pg.addEventListener('click', (e) => {
@@ -257,5 +284,107 @@ document.querySelector('.nav-toggle').addEventListener('click', ()=>{
   ul.style.cssText += 'flex-direction:column; position:fixed; top:70px; right:22px; background:#12140f; padding:20px; border:1px solid rgba(201,162,39,0.22); gap:16px;';
 });
 </script>
+<style>
+  #cookie-banner{
+    position:fixed; left:20px; right:20px; bottom:20px; z-index:999;
+    max-width:560px; margin:0 auto;
+    background:var(--panel); border:1px solid var(--line); border-radius:4px;
+    padding:22px 26px; box-shadow:0 20px 50px -20px rgba(0,0,0,0.7);
+    display:none;
+  }
+  #cookie-banner.show{display:block;}
+  #cookie-banner p{font-size:0.85rem; color:var(--muted); line-height:1.6; margin-bottom:16px;}
+  #cookie-banner a{color:var(--gold-soft); border-bottom:1px solid var(--line);}
+  #cookie-banner .cookie-actions{display:flex; gap:12px; flex-wrap:wrap;}
+  #cookie-banner button{
+    padding:11px 22px; font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;
+    border-radius:2px; cursor:pointer; font-family:'Inter', sans-serif; transition:all 0.25s;
+  }
+  #cookie-accept{background:var(--gold); color:#0b0d0a; border:1px solid var(--gold);}
+  #cookie-accept:hover{background:var(--gold-soft);}
+  #cookie-decline{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  #cookie-decline:hover{border-color:var(--gold); color:var(--gold-soft);}
+</style>
+
+<div id="cookie-banner">
+  <p>Ce site utilise des cookies de mesure d'audience (Google Analytics) pour comprendre comment il est utilisé. Vous pouvez accepter ou refuser — votre choix est modifiable à tout moment. <a href="/rgpd">En savoir plus</a></p>
+  <div class="cookie-actions">
+    <button id="cookie-accept">Accepter</button>
+    <button id="cookie-decline">Refuser</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // À remplacer par le vrai identifiant une fois le compte Google Analytics créé
+
+  function loadGoogleAnalytics(){
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
+  }
+
+  const consent = localStorage.getItem('cookie-consent');
+  if (consent === 'accepted') {
+    loadGoogleAnalytics();
+  } else if (consent === null) {
+    document.getElementById('cookie-banner').classList.add('show');
+  }
+
+  document.getElementById('cookie-accept').addEventListener('click', function(){
+    localStorage.setItem('cookie-consent', 'accepted');
+    document.getElementById('cookie-banner').classList.remove('show');
+    loadGoogleAnalytics();
+  });
+
+  document.getElementById('cookie-decline').addEventListener('click', function(){
+    localStorage.setItem('cookie-consent', 'declined');
+    document.getElementById('cookie-banner').classList.remove('show');
+  });
+})();
+</script>
+
+<style>
+  #sticky-cta{
+    position:fixed; right:24px; bottom:24px; z-index:150;
+    opacity:0; transform:translateY(20px); pointer-events:none;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  #sticky-cta.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+  #sticky-cta a{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 26px; background:var(--gold); color:#0b0d0a;
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    border-radius:2px; box-shadow:0 14px 34px -14px rgba(0,0,0,0.6);
+    transition:background 0.25s, transform 0.25s;
+  }
+  #sticky-cta a:hover{background:var(--gold-soft); transform:translateY(-2px);}
+  @media (max-width:600px){
+    #sticky-cta{right:16px; bottom:16px;}
+    #sticky-cta a{padding:13px 20px; font-size:0.72rem;}
+  }
+</style>
+<div id="sticky-cta">
+  <a href="/#projet">Demander un devis →</a>
+</div>
+<script>
+(function(){
+  const cta = document.getElementById('sticky-cta');
+  window.addEventListener('scroll', function(){
+    if (window.scrollY > 500) {
+      cta.classList.add('show');
+    } else {
+      cta.classList.remove('show');
+    }
+  }, { passive: true });
+})();
+</script>
+
 </body>
 </html>

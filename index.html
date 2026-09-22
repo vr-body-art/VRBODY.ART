@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VR Body Art — Salon privé de tatouage & piercing</title>
+<title>VR Body Art — Salon privé de tatouage & piercing à Clermont (Oise)</title>
+<meta name="description" content="Studio de tatouage et piercing sur rendez-vous à Clermont, dans l'Oise. Pièces sur-mesure, japonais, fine line et flashs disponibles à la réservation en ligne.">
+<link rel="canonical" href="https://vrbody-art.netlify.app/">
+<meta property="og:title" content="VR Body Art — Salon privé de tatouage & piercing">
+<meta property="og:description" content="Studio de tatouage et piercing sur rendez-vous à Clermont, dans l'Oise. Pièces sur-mesure, japonais, fine line et flashs disponibles à la réservation en ligne.">
+<meta property="og:image" content="https://vrbody-art.netlify.app/og-image.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vrbody-art.netlify.app/">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -567,9 +579,9 @@
         <li><span class="n">03</span><span class="t">Rendez-vous de conception puis séance</span></li>
       </ul>
     </div>
-    <form class="reveal" onsubmit="submitProject(event)">
+    <form class="reveal" onsubmit="submitProject(event)" id="projectForm">
       <div class="row2">
-        <input type="text" placeholder="Prénom" required>
+        <input type="text" placeholder="Prénom" required minlength="2">
         <input type="email" placeholder="Email" required>
       </div>
       <div class="row2">
@@ -586,7 +598,8 @@
         <div class="date-chips" id="dateChips"></div>
       </div>
 
-      <textarea placeholder="Décrivez votre projet, style, taille, références..." required></textarea>
+      <textarea placeholder="Décrivez votre projet, style, taille, références..." required minlength="10"></textarea>
+      <div class="form-error" id="formError" style="display:none; color:#e08a7a; font-size:0.8rem; margin:-8px 0 14px;"></div>
 
       <label class="file-drop" for="ref-upload" id="fileDrop">
         <span class="file-drop-label" id="fileDropLabel">📎 Ajouter des images de référence (3 max, 5 Mo chacune)</span>
@@ -595,6 +608,9 @@
       <div class="file-preview" id="filePreview"></div>
 
       <input type="url" placeholder="Ou collez un lien (Pinterest, Instagram, Drive...)">
+
+      <input type="text" name="site_web" id="hp-field" autocomplete="off" tabindex="-1" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" aria-hidden="true">
+      <input type="hidden" id="formLoadedAt" value="">
 
       <button class="btn btn-primary" style="width:100%; justify-content:center;">Envoyer ma demande</button>
     </form>
@@ -617,7 +633,9 @@
     <a href="#avis">Avis</a>
     <a href="#flash">Flash</a>
     <a href="#faq">FAQ</a>
-    <a href="/cgv.html">CGV</a>
+    <a href="/cgv">CGV</a>
+    <a href="/rgpd">Confidentialité</a>
+    <a href="/cgu">CGU</a>
   </div>
   <div class="foot-social">
     <a href="https://instagram.com/vr.body.art" target="_blank">@vr.body.art</a>
@@ -673,25 +691,25 @@ revealEls.forEach(el=>io.observe(el));
 
 // ---------- DATA (placeholder — à remplacer par vraies photos / Supabase) ----------
 const portfolioItems = [
-  {img:'/accueil-04.jpg'},
-  {img:'/accueil-05.jpg'},
-  {img:'/accueil-06.jpg'},
-  {img:'/accueil-07.jpg'},
-  {img:'/accueil-08.jpg'},
-  {img:'/accueil-09.jpg'},
-  {img:'/accueil-10.jpg'},
-  {img:'/accueil-11.jpg'},
-  {img:'/accueil-12.jpg'},
+  {img:'/accueil-04.jpg', alt:'Tatouage dragon japonais avec kanji rouge sur la main'},
+  {img:'/accueil-05.jpg', alt:'Tatouage commémoratif fine line sur avant-bras, hommage à un père'},
+  {img:'/accueil-06.jpg', alt:'Manche japonaise irezumi avec tête de dragon et carpe koï'},
+  {img:'/accueil-07.jpg', alt:'Tatouage floral fine line de pivoines sur avant-bras'},
+  {img:'/accueil-08.jpg', alt:'Tatouage blackwork botanique abstrait sur avant-bras'},
+  {img:'/accueil-09.jpg', alt:'Tatouage fine line botanique sur le sternum'},
+  {img:'/accueil-10.jpg', alt:'Tatouage de deux hirondelles en vol sur avant-bras'},
+  {img:'/accueil-11.jpg', alt:'Tatouages de prénoms en écriture cursive sur avant-bras'},
+  {img:'/accueil-12.jpg', alt:'Tatouage tête de créature style blackwork'},
 ];
 const grid = document.getElementById('portfolio-grid');
 portfolioItems.forEach(i=>{
-  grid.innerHTML += `<div class="p-card"><img src="${i.img}" alt=""></div>`;
+  grid.innerHTML += `<div class="p-card"><img src="${i.img}" alt="${i.alt}"></div>`;
 });
 
 const flashItems = [
-  {img:'/accueil-13.jpg', price:'450€', n:'01', link:'https://cal.com/valentin-raimbaud-vr-body-art-yxe9rp/tatouage-oni-450'},
-  {img:'/accueil-14.jpg', price:'450€', n:'02', link:'https://cal.com/valentin-raimbaud-vr-body-art-yxe9rp/tatouage-carpe-koi-450'},
-  {img:'/accueil-15.jpg', price:'190€', n:'03', link:'https://cal.com/valentin-raimbaud-vr-body-art-yxe9rp/tatouage-miroir-190'},
+  {img:'/accueil-13.jpg', alt:'Flash tatouage Oni, masque démon japonais avec dragon et vagues', price:'450€', n:'01', link:'https://cal.com/valentin-raimbaud-vr-body-art-yxe9rp/tatouage-oni-450'},
+  {img:'/accueil-14.jpg', alt:'Flash tatouage carpe koï japonaise, noir et gris', price:'450€', n:'02', link:'https://cal.com/valentin-raimbaud-vr-body-art-yxe9rp/tatouage-carpe-koi-450'},
+  {img:'/accueil-15.jpg', alt:'Flash tatouage miroir ancien orné avec visage sculpté', price:'190€', n:'03', link:'https://cal.com/valentin-raimbaud-vr-body-art-yxe9rp/tatouage-miroir-190'},
 ];
 const SUPABASE_URL = 'https://djuvwmxuplkzplahjcdm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_RY-y4vH1IXXm5Cto2TQe6A_SWdEJ43O';
@@ -718,7 +736,7 @@ async function renderFlashHome() {
       <div class="f-card ${unavailable ? 'unavailable' : ''}">
         <div class="thumb">
           ${unavailable ? '<div class="unavailable-tag">Réservé</div>' : ''}
-          <img src="${f.img}" alt=""></div>
+          <img src="${f.img}" alt="${f.alt}"></div>
         <div class="f-card-body">
           <span class="price">${f.price}</span>
           <a href="${f.link}" target="_blank">${unavailable ? 'Indisponible' : 'Réserver →'}</a>
@@ -785,7 +803,7 @@ refUpload.addEventListener('change', (e)=>{
 function renderFilePreview(){
   filePreview.innerHTML = uploadedFiles.map((f,i)=>{
     const url = URL.createObjectURL(f);
-    return `<div class="thumb-wrap"><img src="${url}" alt=""><span class="remove" onclick="removeFile(${i})">✕</span></div>`;
+    return `<div class="thumb-wrap"><img src="${url}" alt="Aperçu de l'image de référence ajoutée"><span class="remove" onclick="removeFile(${i})">✕</span></div>`;
   }).join('');
   fileDropLabel.textContent = uploadedFiles.length >= 3
     ? '3 images ajoutées (maximum atteint)'
@@ -952,6 +970,40 @@ function removeAvailabilityDate(i){
 async function submitProject(e){
   e.preventDefault();
   const form = e.target;
+  const errorBox = document.getElementById('formError');
+  errorBox.style.display = 'none';
+
+  // Anti-spam : champ piège (les robots le remplissent, les humains ne le voient pas)
+  const honeypot = document.getElementById('hp-field').value;
+  if (honeypot) {
+    // Ne rien signaler au robot, juste ignorer silencieusement l'envoi
+    return;
+  }
+
+  // Anti-spam : délai minimum entre le chargement du formulaire et l'envoi
+  const loadedAt = parseInt(document.getElementById('formLoadedAt').value || '0', 10);
+  const elapsed = Date.now() - loadedAt;
+  if (elapsed < 2500) {
+    errorBox.textContent = "Merci de prendre un instant avant d'envoyer le formulaire.";
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  const emailValue = form.querySelector('input[type=email]').value.trim();
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(emailValue)) {
+    errorBox.textContent = "Merci de renseigner une adresse email valide.";
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  const descriptionValue = form.querySelector('textarea').value.trim();
+  if (descriptionValue.length < 10) {
+    errorBox.textContent = "Merci de décrire votre projet un peu plus en détail (10 caractères minimum).";
+    errorBox.style.display = 'block';
+    return;
+  }
+
   const btn = form.querySelector('button');
   const originalText = btn.textContent;
   btn.textContent = 'Envoi en cours...';
@@ -965,13 +1017,14 @@ async function submitProject(e){
 
     const data = {
       prenom: form.querySelector('input[type=text]').value,
-      email: form.querySelector('input[type=email]').value,
+      email: emailValue,
       zone: form.querySelectorAll('input[type=text]')[1]?.value || '',
       taille: form.querySelector('input[type=number]')?.value || '',
       disponibilites: availabilityDates.map(formatDateFR).join(', '),
-      description: form.querySelector('textarea').value,
+      description: descriptionValue,
       lienReference: form.querySelector('input[type=url]')?.value || '',
       attachments,
+      site_web: honeypot,
     };
 
     const r = await fetch(PROJECT_API_URL, {
@@ -987,16 +1040,24 @@ async function submitProject(e){
       renderFilePreview();
       availabilityDates = [];
       renderDateChips();
+      document.getElementById('formLoadedAt').value = Date.now();
     } else {
-      alert("Une erreur est survenue, merci de réessayer ou de nous contacter directement.");
+      errorBox.textContent = "Une erreur est survenue, merci de réessayer ou de nous contacter directement.";
+      errorBox.style.display = 'block';
     }
   } catch (err) {
-    alert("Une erreur est survenue, merci de réessayer ou de nous contacter directement.");
+    errorBox.textContent = "Une erreur est survenue, merci de réessayer ou de nous contacter directement.";
+    errorBox.style.display = 'block';
   } finally {
     btn.textContent = originalText;
     btn.disabled = false;
   }
 }
+document.addEventListener('DOMContentLoaded', function(){
+  const f = document.getElementById('formLoadedAt');
+  if (f) f.value = Date.now();
+});
+
 
 // ---------- FAQ ----------
 const faqData = [
@@ -1028,6 +1089,110 @@ document.querySelector('.nav-toggle').addEventListener('click', ()=>{
   ul.style.display = ul.style.display==='flex' ? 'none' : 'flex';
   ul.style.cssText += 'flex-direction:column; position:fixed; top:70px; right:22px; background:#12140f; padding:20px; border:1px solid rgba(201,162,39,0.22); gap:16px;';
 });
+</script>
+
+<style>
+  #cookie-banner{
+    position:fixed; left:20px; right:20px; bottom:20px; z-index:999;
+    max-width:560px; margin:0 auto;
+    background:var(--panel); border:1px solid var(--line); border-radius:4px;
+    padding:22px 26px; box-shadow:0 20px 50px -20px rgba(0,0,0,0.7);
+    display:none;
+  }
+  #cookie-banner.show{display:block;}
+  #cookie-banner p{font-size:0.85rem; color:var(--muted); line-height:1.6; margin-bottom:16px;}
+  #cookie-banner a{color:var(--gold-soft); border-bottom:1px solid var(--line);}
+  #cookie-banner .cookie-actions{display:flex; gap:12px; flex-wrap:wrap;}
+  #cookie-banner button{
+    padding:11px 22px; font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;
+    border-radius:2px; cursor:pointer; font-family:'Inter', sans-serif; transition:all 0.25s;
+  }
+  #cookie-accept{background:var(--gold); color:#0b0d0a; border:1px solid var(--gold);}
+  #cookie-accept:hover{background:var(--gold-soft);}
+  #cookie-decline{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  #cookie-decline:hover{border-color:var(--gold); color:var(--gold-soft);}
+</style>
+
+<div id="cookie-banner">
+  <p>Ce site utilise des cookies de mesure d'audience (Google Analytics) pour comprendre comment il est utilisé. Vous pouvez accepter ou refuser — votre choix est modifiable à tout moment. <a href="/rgpd">En savoir plus</a></p>
+  <div class="cookie-actions">
+    <button id="cookie-accept">Accepter</button>
+    <button id="cookie-decline">Refuser</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // À remplacer par le vrai identifiant une fois le compte Google Analytics créé
+
+  function loadGoogleAnalytics(){
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
+  }
+
+  const consent = localStorage.getItem('cookie-consent');
+  if (consent === 'accepted') {
+    loadGoogleAnalytics();
+  } else if (consent === null) {
+    document.getElementById('cookie-banner').classList.add('show');
+  }
+
+  document.getElementById('cookie-accept').addEventListener('click', function(){
+    localStorage.setItem('cookie-consent', 'accepted');
+    document.getElementById('cookie-banner').classList.remove('show');
+    loadGoogleAnalytics();
+  });
+
+  document.getElementById('cookie-decline').addEventListener('click', function(){
+    localStorage.setItem('cookie-consent', 'declined');
+    document.getElementById('cookie-banner').classList.remove('show');
+  });
+})();
+</script>
+
+<style>
+  #sticky-cta{
+    position:fixed; right:24px; bottom:24px; z-index:150;
+    opacity:0; transform:translateY(20px); pointer-events:none;
+    transition:opacity 0.4s ease, transform 0.4s ease;
+  }
+  #sticky-cta.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+  #sticky-cta a{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 26px; background:var(--gold); color:#0b0d0a;
+    font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    border-radius:2px; box-shadow:0 14px 34px -14px rgba(0,0,0,0.6);
+    transition:background 0.25s, transform 0.25s;
+  }
+  #sticky-cta a:hover{background:var(--gold-soft); transform:translateY(-2px);}
+  @media (max-width:600px){
+    #sticky-cta{right:16px; bottom:16px;}
+    #sticky-cta a{padding:13px 20px; font-size:0.72rem;}
+  }
+</style>
+<div id="sticky-cta">
+  <a href="#flash">Réserver un flash →</a>
+</div>
+<script>
+(function(){
+  const cta = document.getElementById('sticky-cta');
+  const hero = document.querySelector('.hero');
+  const threshold = hero ? hero.offsetHeight * 0.8 : 600;
+  window.addEventListener('scroll', function(){
+    if (window.scrollY > threshold) {
+      cta.classList.add('show');
+    } else {
+      cta.classList.remove('show');
+    }
+  }, { passive: true });
+})();
 </script>
 
 </body>
