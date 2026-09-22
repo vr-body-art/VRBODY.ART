@@ -24,6 +24,10 @@ exports.handler = async (event) => {
     const lienReference = data.lienReference;
     const attachments = Array.isArray(data.attachments) ? data.attachments : [];
 
+  if (data.site_web) {
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+  }
+
   if (!prenom || !email || !description) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Champs requis manquants' }) };
   }
