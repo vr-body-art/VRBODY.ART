@@ -441,6 +441,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding-bloc
     {id:'flash-koi',   name:'Carpe koï', price:450, acompte:135, duree:'5 h',    img:'/accueil-14.jpg', alt:'Flash carpe koï japonaise, noir et gris',               link:CAL+'tatouage-carpe-koi-450'},
     {id:'flash-miroir',name:'Miroir',    price:190, acompte:50,  duree:'1 h 30', img:'/accueil-15.jpg', alt:'Flash miroir ancien orné avec visage sculpté',         link:CAL+'tatouage-miroir-190'},
     {id:'flash-papillon',name:'Papillon qui pleure', price:220, acompte:60, duree:'2 h', img:'/flash-papillon.jpg', alt:'Flash papillon dont les ailes dévoilent un visage de statue en pleurs', link:CAL+'tatouage-papillon-qui-pleur-220'},
+    {id:'flash-colombe', name:'Cœur colombe', price:200, acompte:60, duree:'2 h', img:'/flash-colombe.jpg', alt:'Flash cœur noir avec une colombe blanche aux ailes déployées', link:CAL+'tatouage-coeur-colombe-200'},
   ];
   const sub=f=>`Séance ${f.duree} · acompte ${f.acompte} €`;
 
@@ -511,7 +512,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding-bloc
   const cb=document.getElementById('cookie-banner');let consent=null;try{consent=localStorage.getItem('cookie-consent')}catch(_){}
   if(consent==='accepted')loadGA();else if(consent===null)cb.hidden=false;
   document.getElementById('cookie-accept').onclick=()=>{try{localStorage.setItem('cookie-consent','accepted')}catch(_){}cb.hidden=true;loadGA()};
-  document.getElementById('cookie-decline').onclick=()=>{try{localStorage.setItem('cookie-consent','declined')}catch(_){}cb.hidden=true};    {id:'flash-colombe', name:'Cœur colombe', price:200, acompte:60, duree:'2 h', img:'/flash-colombe.jpg', alt:'Flash cœur noir avec une colombe blanche aux ailes déployées', link:CAL+'tatouage-coeur-colombe-200'},
+  document.getElementById('cookie-decline').onclick=()=>{try{localStorage.setItem('cookie-consent','declined')}catch(_){}cb.hidden=true};
 })();
 </script>
 
