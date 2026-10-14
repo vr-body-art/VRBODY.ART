@@ -511,7 +511,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding-bloc
   const cb=document.getElementById('cookie-banner');let consent=null;try{consent=localStorage.getItem('cookie-consent')}catch(_){}
   if(consent==='accepted')loadGA();else if(consent===null)cb.hidden=false;
   document.getElementById('cookie-accept').onclick=()=>{try{localStorage.setItem('cookie-consent','accepted')}catch(_){}cb.hidden=true;loadGA()};
-  document.getElementById('cookie-decline').onclick=()=>{try{localStorage.setItem('cookie-consent','declined')}catch(_){}cb.hidden=true};
+  document.getElementById('cookie-decline').onclick=()=>{try{localStorage.setItem('cookie-consent','declined')}catch(_){}cb.hidden=true};    {id:'flash-colombe', name:'Cœur colombe', price:200, acompte:60, duree:'2 h', img:'/flash-colombe.jpg', alt:'Flash cœur noir avec une colombe blanche aux ailes déployées', link:CAL+'tatouage-coeur-colombe-200'},
 })();
 </script>
 
