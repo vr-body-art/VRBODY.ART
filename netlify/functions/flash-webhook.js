@@ -4,12 +4,8 @@ const crypto = require('crypto');
 
 const SUPABASE_URL = 'https://djuvwmxuplkzplahjcdm.supabase.co';
 
-// fin du lien Cal.com  ->  identifiant du flash dans la table "flashs"
-const FLASHS = {
-  'tatouage-oni-450': 'flash-oni',
-  'tatouage-carpe-koi-450': 'flash-koi',
-  'tatouage-miroir-190': 'flash-miroir',
-};
+// Le flash est retrouvé dans la table "flashs" grâce à la colonne cal_slug
+// (la fin du lien Cal.com, ex. "tatouage-miroir-190"). Pour un nouveau flash, il suffit d'ajouter une ligne dans Supabase.
 
 const RESERVE = ['BOOKING_PAID', 'BOOKING_CREATED'];
 const LIBERE = ['BOOKING_CANCELLED', 'BOOKING_REJECTED'];
@@ -37,8 +33,7 @@ exports.handler = async (event) => {
   const trigger = data.triggerEvent;
   const p = data.payload || {};
   const slug = p.type || p.eventTypeSlug || (p.eventType && p.eventType.slug) || '';
-  const flashId = FLASHS[slug];
-  if (!flashId) return { statusCode: 200, body: 'Pas un flash, rien à faire' };
+  if (!slug) return { statusCode: 200, body: 'Pas de lien Cal.com, rien à faire' };
 
   let disponible;
   if (RESERVE.includes(trigger)) disponible = false;
@@ -53,17 +48,19 @@ exports.handler = async (event) => {
     if (acompte) return { statusCode: 200, body: 'En attente du paiement' };
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/flashs?id=eq.${encodeURIComponent(flashId)}`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/flashs?cal_slug=eq.${encodeURIComponent(slug)}`, {
     method: 'PATCH',
     headers: {
       apikey: key,
       Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json',
-      Prefer: 'return=minimal',
+      Prefer: 'return=representation',
     },
     body: JSON.stringify({ disponible }),
   });
   if (!res.ok) return { statusCode: 502, body: 'Erreur Supabase ' + res.status };
+  const rows = await res.json().catch(() => []);
+  if (!rows.length) return { statusCode: 200, body: 'Pas un flash, rien à faire' };
 
-  return { statusCode: 200, body: `${flashId} -> disponible=${disponible}` };
+  return { statusCode: 200, body: `${rows[0].id} -> disponible=${disponible}` };
 };
