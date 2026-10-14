@@ -45,9 +45,12 @@ exports.handler = async (event) => {
   else if (LIBERE.includes(trigger)) disponible = true;
   else return { statusCode: 200, body: 'Événement ignoré' };
 
-  // BOOKING_CREATED arrive avant le paiement : on ne bloque que si l'acompte est payé
-  if (trigger === 'BOOKING_CREATED' && p.paymentRequired !== false && p.status !== 'ACCEPTED') {
-    return { statusCode: 200, body: 'En attente du paiement' };
+  // Réservation créée : si le flash demande un acompte, on attend "Réservation payée".
+  // Sans acompte (réservation directe), on bloque tout de suite.
+  if (trigger === 'BOOKING_CREATED') {
+    const acompte = Number(p.price || 0) > 0 || p.paymentRequired === true ||
+      (Array.isArray(p.paymentId) ? p.paymentId.length > 0 : !!p.paymentId);
+    if (acompte) return { statusCode: 200, body: 'En attente du paiement' };
   }
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/flashs?id=eq.${encodeURIComponent(flashId)}`, {
