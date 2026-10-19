@@ -295,6 +295,133 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding-bloc
   <symbol id="clip" viewBox="0 0 24 24"><path d="m21.4 11.1-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
 </svg>
 
+<style id="hw-css">
+/* ===== Habillage Halloween (s'active avec body.hw) ===== */
+:root{--ember:#D8692E;--ember-lit:#F08A45;--blood:#5C1610;--bar-h:0px}
+body.hw{--bar-h:44px}
+body.hw .nav{top:calc(env(safe-area-inset-top,0px) + var(--bar-h))}
+body.hw .hero{padding-top:calc(120px + var(--bar-h))}
+html:has(body.hw){scroll-padding-top:128px}
+
+/* --- bandeau --- */
+.hw-bar{display:none}
+body.hw .hw-bar{display:flex;position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:var(--bar-h);z-index:45;align-items:center;
+  background:linear-gradient(90deg,#120806,#1d0b06 40%,#120806);border-bottom:1px solid rgba(216,105,46,.35);overflow:hidden;text-decoration:none;color:var(--bone)}
+.hw-bar .track{display:flex;gap:0;white-space:nowrap;animation:hw-marq 38s linear infinite;flex:none}
+.hw-bar .item{display:inline-flex;align-items:center;gap:14px;padding-inline:22px;font:500 12px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase}
+.hw-bar .item b{color:var(--ember-lit);font-weight:500}
+.hw-bar .item i{font-style:normal;color:var(--gold)}
+.hw-bar .sep{width:5px;height:5px;border-radius:50%;background:var(--ember);box-shadow:0 0 10px var(--ember)}
+.hw-bar .count{position:absolute;right:0;top:0;bottom:0;display:flex;align-items:center;gap:10px;padding:0 18px 0 28px;
+  background:#140806;border-left:1px solid rgba(216,105,46,.35);box-shadow:-24px 0 24px #140806;font:500 12px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--bone)}
+.hw-bar .count span{color:var(--ember-lit)}
+@keyframes hw-marq{to{transform:translateX(-50%)}}
+
+/* --- hero --- */
+.hw-fx{display:none}
+body.hw .hw-fx{display:block;position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.hw-fx .moon{position:absolute;right:-8vw;top:-14vw;width:46vw;height:46vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,138,69,.22),rgba(216,105,46,.08) 40%,transparent 68%)}
+.hw-fx .tint{position:absolute;inset:0;background:linear-gradient(0deg,rgba(60,14,6,.55) 0%,transparent 45%);mix-blend-mode:multiply}
+.hw-fx .fog{position:absolute;left:-20%;right:-20%;height:46%;bottom:-6%;opacity:.55;filter:blur(18px);
+  background:radial-gradient(40% 60% at 20% 70%,rgba(200,190,175,.28),transparent 70%),radial-gradient(35% 50% at 62% 80%,rgba(200,190,175,.22),transparent 70%),radial-gradient(30% 55% at 90% 65%,rgba(200,190,175,.18),transparent 70%);
+  animation:hw-fog 26s ease-in-out infinite alternate}
+.hw-fx .fog.f2{bottom:-14%;opacity:.4;animation-duration:34s;animation-direction:alternate-reverse;transform:scaleX(-1)}
+.hw-fx canvas{position:absolute;inset:0;width:100%;height:100%}
+@keyframes hw-fog{from{translate:-6% 0}to{translate:7% -2%}}
+.hw-only{display:none!important}
+body.hw .hw-only{display:revert!important}
+body.hw .hw-hide{display:none!important}
+body.hw .hero .kicker{color:var(--ember-lit)}
+body.hw .hero h1 em{color:var(--ember-lit);text-shadow:0 0 34px rgba(216,105,46,.45)}
+
+/* sceau tournant */
+.hw-seal{position:absolute;right:clamp(16px,6vw,90px);top:calc(var(--bar-h) + 110px);width:150px;height:150px;z-index:2}
+.hw-seal svg.ring{width:100%;height:100%;animation:hw-spin 22s linear infinite}
+.hw-seal text{font:500 11.5px var(--f-mono);letter-spacing:.32em;fill:var(--gold)}
+.hw-seal .mid{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.hw-seal .mid b{display:block;font:italic 500 34px/0.95 var(--f-display);color:var(--bone)}
+.hw-seal .mid small{display:block;margin-top:6px;font:500 10px/1 var(--f-mono);letter-spacing:.24em;color:var(--ember-lit)}
+@keyframes hw-spin{to{transform:rotate(360deg)}}
+
+/* toggle maquette */
+.hw-toggle{display:none!important}
+body.vr-owner .hw-toggle{display:flex!important}
+.hw-toggle{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(10,13,11,.9);backdrop-filter:blur(10px);color:var(--bone);font:500 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.hw-toggle i{width:34px;height:20px;border-radius:999px;background:#2a2f2c;position:relative;transition:background .25s}
+.hw-toggle i::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--bone);transition:transform .25s}
+body.hw .hw-toggle i{background:var(--ember)}
+body.hw .hw-toggle i::after{transform:translateX(14px)}
+/* --- section événement --- */
+.hw-event{display:none}
+body.hw .hw-event{display:block;position:relative;padding-block:clamp(70px,10vw,130px);overflow:hidden;isolation:isolate;
+  background:radial-gradient(60% 70% at 85% 30%,rgba(216,105,46,.16),transparent 70%),radial-gradient(50% 60% at 0% 100%,rgba(30,91,70,.25),transparent 70%),#0b0807;
+  border-block:1px solid rgba(216,105,46,.25)}
+.hw-event .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,90px);align-items:center}
+.hw-event .kicker{color:var(--ember-lit)}
+.hw-event h2{font-size:clamp(46px,6.4vw,96px);font-weight:400;margin-block:20px 24px}
+.hw-event h2 em{color:var(--ember-lit)}
+.hw-event .intro{color:var(--bone-dim);max-width:32em;font-size:17px}
+.hw-days{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(216,105,46,.28);border:1px solid rgba(216,105,46,.28);margin-block:34px}
+.hw-days div{background:#0e0a08;padding:20px 22px}
+.hw-days b{display:block;font:italic 500 36px/1 var(--f-display);color:var(--bone)}
+.hw-days span{display:block;margin-top:8px;font:500 11.5px/1.5 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--bone-dim)}
+.hw-perks{list-style:none;padding:0;margin:0 0 34px;display:grid;gap:14px}
+.hw-perks li{display:flex;gap:14px;align-items:baseline;color:var(--bone)}
+.hw-perks li::before{content:"";flex:none;width:7px;height:7px;transform:rotate(45deg) translateY(-2px);background:var(--ember);box-shadow:0 0 12px var(--ember)}
+.hw-perks small{color:var(--bone-dim)}
+.hw-event .btn-ember{background:var(--ember);border-color:var(--ember);color:#140806}
+.hw-event .btn-ember:hover{background:var(--ember-lit)}
+.hw-event .ctas{display:flex;flex-wrap:wrap;gap:14px}
+.hw-cd{display:flex;gap:22px;margin-top:38px;font:500 11px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--bone-dim)}
+.hw-cd b{display:block;font:400 40px/1 var(--f-display);letter-spacing:0;color:var(--gold);margin-bottom:8px;font-variant-numeric:tabular-nums}
+
+/* planches en éventail (volontairement irrégulier) */
+.hw-fan{position:relative;height:clamp(420px,46vw,600px)}
+.hw-card{position:absolute;width:52%;aspect-ratio:800/1131;background:#efe9dc;padding:10px 10px 38px;box-shadow:0 30px 60px rgba(0,0,0,.6);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.hw-card img{width:100%;height:100%;object-fit:cover;display:block;filter:sepia(.25) contrast(1.05)}
+.hw-card figcaption{position:absolute;left:12px;right:12px;bottom:11px;display:flex;justify-content:space-between;font:500 11px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#2a211c}
+.hw-card figcaption b{color:var(--blood)}
+.hw-card .tag{position:absolute;top:-12px;right:-10px;background:var(--ember);color:#140806;font:600 10.5px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;padding:8px 10px;transform:rotate(4deg)}
+.hw-card.c1{left:0;top:9%;transform:rotate(-7deg)}
+.hw-card.c2{left:26%;top:0;transform:rotate(2.5deg);z-index:2}
+.hw-card.c3{left:47%;top:14%;transform:rotate(9deg)}
+.hw-fan:hover .c1{transform:rotate(-11deg) translate(-14px,6px)}
+.hw-fan:hover .c3{transform:rotate(13deg) translate(16px,8px)}
+.hw-fan:hover .c2{transform:rotate(1deg) translateY(-12px)}
+
+
+@media (max-width:900px){
+  .hw-event .grid{grid-template-columns:1fr}
+  .hw-fan{height:min(116vw,520px);max-width:520px}
+  .hw-seal{width:112px;height:112px;top:calc(var(--bar-h) + 92px);right:16px}
+  .hw-seal .mid b{font-size:26px}
+  .hw-seal text{font-size:10.5px}
+}
+@media (max-width:560px){
+  body.hw{--bar-h:38px}
+  .hw-bar .count{display:none}
+  .hw-bar .item{font-size:11px;padding-inline:16px}
+  .hw-cd{gap:16px}.hw-cd b{font-size:32px}
+  body.hw .hw-seal{display:none!important}
+  .hw-card figcaption{font-size:9px;letter-spacing:.08em}
+  .hw-card{width:48%}.hw-card.c3{left:46%}.hw-card.c2{left:24%}
+  .hw-fan{height:440px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hw-bar .track,.hw-seal svg.ring,.hw-fx .fog{animation:none}
+}
+</style>
+
+<!-- BANDEAU -->
+<a class="hw-bar" href="#weekend-flash" aria-label="Week-end flash Halloween, 24 et 25 octobre">
+  <div class="track" aria-hidden="true">
+    <span class="item"><b>Week-end Flash Halloween</b><span class="sep"></span><i>24 &amp; 25 octobre</i><span class="sep"></span>Flashs exclusifs<span class="sep"></span>Offre piercing<span class="sep"></span>Places limitées<span class="sep"></span></span><span class="item"><b>Week-end Flash Halloween</b><span class="sep"></span><i>24 &amp; 25 octobre</i><span class="sep"></span>Flashs exclusifs<span class="sep"></span>Offre piercing<span class="sep"></span>Places limitées<span class="sep"></span></span><span class="item"><b>Week-end Flash Halloween</b><span class="sep"></span><i>24 &amp; 25 octobre</i><span class="sep"></span>Flashs exclusifs<span class="sep"></span>Offre piercing<span class="sep"></span>Places limitées<span class="sep"></span></span><span class="item"><b>Week-end Flash Halloween</b><span class="sep"></span><i>24 &amp; 25 octobre</i><span class="sep"></span>Flashs exclusifs<span class="sep"></span>Offre piercing<span class="sep"></span>Places limitées<span class="sep"></span></span><span class="item"><b>Week-end Flash Halloween</b><span class="sep"></span><i>24 &amp; 25 octobre</i><span class="sep"></span>Flashs exclusifs<span class="sep"></span>Offre piercing<span class="sep"></span>Places limitées<span class="sep"></span></span><span class="item"><b>Week-end Flash Halloween</b><span class="sep"></span><i>24 &amp; 25 octobre</i><span class="sep"></span>Flashs exclusifs<span class="sep"></span>Offre piercing<span class="sep"></span>Places limitées<span class="sep"></span></span>
+  </div>
+  <span class="count">Plus que <span id="hwBarCd">—</span></span>
+</a>
+
 <header class="nav" id="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="VR Body Art, accueil"><svg class="logo" aria-hidden="true"><use href="#vrlogo"/></svg><b>BODY ART</b></a>
@@ -312,9 +439,18 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding-bloc
   <section class="hero">
     <figure class="photo slot" data-label="accueil-01.jpg"><img src="/accueil-01.jpg" alt="Séance de tatouage au salon VR Body Art" fetchpriority="high"></figure>
     <div class="veil"></div>
+    <div class="hw-fx" aria-hidden="true"><div class="moon"></div><div class="tint"></div><div class="fog"></div><div class="fog f2"></div><canvas id="hwEmbers"></canvas></div>
+    <div class="hw-seal hw-only" aria-hidden="true">
+      <svg class="ring" viewBox="0 0 150 150"><defs><path id="hwc" d="M75,75 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0"/></defs>
+        <circle cx="75" cy="75" r="72" fill="rgba(10,8,7,.55)" stroke="rgba(201,164,92,.5)"/>
+        <circle cx="75" cy="75" r="46" fill="none" stroke="rgba(216,105,46,.5)" stroke-dasharray="2 5"/>
+        <text><textPath href="#hwc">WEEK-END FLASH · HALLOWEEN · 2026 ·</textPath></text></svg>
+      <div class="mid"><div><b>24·25</b><small>OCTOBRE</small></div></div>
+    </div>
+
     <div class="wrap">
       <div>
-        <p class="kicker">Clermont, Oise</p>
+        <p class="kicker hw-hide">Clermont, Oise</p><p class="kicker hw-only">Week-end flash Halloween · Clermont</p>
         <h1><span class="l"><span>L'encre comme</span></span><span class="l"><span>un <em>art</em>, le geste</span></span><span class="l"><span>comme une <em>signature</em></span></span></h1>
         <p class="lead">Tatouage et piercing sur rendez-vous, dans un salon privé où l'on prend le temps du détail.</p>
         <div class="ctas">
@@ -328,6 +464,37 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding-bloc
       </aside>
     </div>
     <span class="scroll">SCROLL</span>
+  </section>
+
+    <section class="hw-event" id="weekend-flash" aria-labelledby="hwTitle">
+    <div class="wrap grid">
+      <div>
+        <p class="kicker">Évènement · Édition Halloween</p>
+        <h2 id="hwTitle">Week-end <em>Flash</em><br>Halloween</h2>
+        <p class="intro">Deux jours, une série de flashs dessinés pour l'occasion, chacun tatoué une seule fois. Choisissez votre planche, réservez votre créneau, on s'occupe du reste.</p>
+        <div class="hw-days">
+          <div><b>Sam. 24</b><span>Octobre · 9h – 20h</span></div>
+          <div><b>Dim. 25</b><span>Octobre · 9h – 20h</span></div>
+        </div>
+        <ul class="hw-perks">
+          <li><span>Flashs exclusifs Halloween <small>· pièces uniques, tarifs spéciaux week-end</small></span></li>
+          <li><span>Offre piercing avec Amei <small>· le même week-end</small></span></li>
+          <li><span>Sur réservation uniquement <small>· acompte en ligne, places limitées</small></span></li>
+        </ul>
+        <div class="ctas">
+          <a class="btn btn-ember" href="#flash">Choisir mon flash <svg><use href="#arr"/></svg></a>
+          <a class="btn btn-line" href="#piercing">Offre piercing</a>
+        </div>
+        <div class="hw-cd" aria-label="Compte à rebours avant le week-end flash">
+          <div><b id="cdD">00</b>Jours</div><div><b id="cdH">00</b>Heures</div><div><b id="cdM">00</b>Min</div><div><b id="cdS">00</b>Sec</div>
+        </div>
+      </div>
+      <div class="hw-fan">
+        <figure class="hw-card c1"><img loading="lazy" src="/flash-papillon.jpg" alt="Flash papillon"><figcaption><span>Planche 01</span><b>Exclusif</b></figcaption></figure>
+        <figure class="hw-card c2"><span class="tag">Halloween</span><img loading="lazy" src="/flash-colombe.jpg" alt="Flash cœur colombe"><figcaption><span>Planche 02</span><b>Exclusif</b></figcaption></figure>
+        <figure class="hw-card c3"><img loading="lazy" src="/flash-vase-fleurs.jpg" alt="Flash vase fleuri"><figcaption><span>Planche 03</span><b>Exclusif</b></figcaption></figure>
+      </div>
+    </div>
   </section>
 
   <section class="s studio" id="studio">
@@ -660,5 +827,56 @@ footer{position:relative;z-index:2;border-top:1px solid var(--line);padding-bloc
 })();
 </script>
 
+<button class="hw-toggle" id="hwToggle" type="button" aria-pressed="true" title="Visible seulement par toi"><i></i>Halloween</button>
+<script>
+(()=>{
+  const b=document.body;
+  const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):(v===null?localStorage.removeItem(k):localStorage.setItem(k,v))}catch(e){return null}};
+  // Lien secret propriétaire : /?proprio=CODE (active) ou /?proprio=off (désactive)
+  const q=new URLSearchParams(location.search).get('proprio');
+  if(q==='vr-ffe6021e'){ls('vr-owner','1');history.replaceState(null,'',location.pathname+location.hash)}
+  else if(q==='off'){ls('vr-owner',null);ls('hw-off',null)}
+  const owner=ls('vr-owner')==='1';
+  // Thème Halloween actif jusqu'au lundi 26 octobre 2026, puis le site redevient normal tout seul
+  if(Date.now()>=new Date('2026-10-26T00:00:00+01:00').getTime()) return;
+  if(owner){
+    b.classList.add('vr-owner');
+    const t=document.getElementById('hwToggle');
+    const set=on=>{b.classList.toggle('hw',on);t.setAttribute('aria-pressed',on);ls('hw-off',on?null:'1')};
+    t.onclick=()=>set(!b.classList.contains('hw'));
+    set(ls('hw-off')!=='1');
+  } else b.classList.add('hw');
+  // compte à rebours (samedi 24 oct 2026, 9h heure de Paris)
+  const target=new Date('2026-10-24T09:00:00+02:00').getTime();
+  const p=n=>String(n).padStart(2,'0'), $=id=>document.getElementById(id);
+  function tick(){
+    let s=Math.max(0,Math.floor((target-Date.now())/1000));
+    const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),x=s%60;
+    $('cdD').textContent=p(d);$('cdH').textContent=p(h);$('cdM').textContent=p(m);$('cdS').textContent=p(x);
+    $('hwBarCd').textContent=s?(d?d+' j '+p(h)+' h':p(h)+' h '+p(m)+' min'):"C'est ce week-end !";
+  }
+  tick();setInterval(tick,1000);
+  // braises qui montent (positions aléatoires, pas de motif répété)
+  const c=document.getElementById('hwEmbers'); if(!c||matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const g=c.getContext('2d'); let W,H,parts=[];
+  const size=()=>{const r=c.getBoundingClientRect();W=c.width=r.width*devicePixelRatio;H=c.height=r.height*devicePixelRatio};
+  size(); addEventListener('resize',size);
+  const spawn=(y)=>({x:Math.random()*W,y:y??H+10,r:(Math.random()*1.8+.6)*devicePixelRatio,vy:(Math.random()*.5+.25)*devicePixelRatio,ph:Math.random()*6.28,a:Math.random()*.6+.3});
+  for(let i=0;i<46;i++)parts.push(spawn(Math.random()*H));
+  (function loop(){
+    if(b.classList.contains('hw')){
+      g.clearRect(0,0,W,H);
+      for(const q of parts){
+        q.y-=q.vy;q.ph+=.02;q.x+=Math.sin(q.ph)*.35*devicePixelRatio;
+        if(q.y<-10)Object.assign(q,spawn());
+        const fade=Math.min(1,q.y/(H*.6));
+        g.beginPath();g.arc(q.x,q.y,q.r,0,6.28);
+        g.fillStyle=`rgba(240,${120+Math.floor(q.a*60)},60,${q.a*fade})`;g.shadowColor='rgba(240,120,50,.9)';g.shadowBlur=8*devicePixelRatio;g.fill();
+      }
+    }
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
 </body>
 </html>
