@@ -64,6 +64,11 @@ textarea{min-height:70px;resize:vertical}
 .ok h2{font-size:28px}
 .acts{display:flex;flex-wrap:wrap;gap:8px}
 .minor{border-color:var(--gold)}
+.zones{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.zones label{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer;font-weight:500}
+.zones input{width:auto;min-height:0;accent-color:var(--red)}
+.zones label:has(input:checked){border-color:var(--ink);background:var(--goldsoft)}
+.zg{width:100%;font-size:13px;color:var(--mut);margin-top:6px}
 .list{display:grid;gap:10px}
 .item{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between}
 .item p{margin:0}.meta{color:var(--mut);font-size:14px}
@@ -97,7 +102,8 @@ textarea{min-height:70px;resize:vertical}
         <label>Date de la séance<input id="dSeance" type="date" required></label>
         <label>Réalisé par<input id="praticien" required></label>
       </div>
-      <label><span id="descLbl">Tatouage : motif, emplacement, taille</span><textarea id="desc" required></textarea></label>
+      <label id="descWrap"><span id="descLbl">Tatouage : motif, emplacement, taille</span><textarea id="desc" required></textarea></label>
+      <div id="zonesWrap" hidden><span style="font-weight:500">Emplacement(s) du piercing <span class="hint">coche tout ce qui est fait aujourd'hui</span></span><div class="zones" id="zones"></div></div>
     </fieldset>
 
     <fieldset>
@@ -111,7 +117,7 @@ textarea{min-height:70px;resize:vertical}
         <label>Téléphone<input id="tel" type="tel" autocomplete="off"></label>
       </div>
       <div class="row">
-        <label>E-mail<input id="email" type="email" autocomplete="off"></label>
+        <label>E-mail <span class="hint">la copie et la fiche de soins y sont envoyées</span><input id="email" type="email" autocomplete="off" required></label>
         <label>Adresse<input id="adresse" autocomplete="off"></label>
       </div>
       <p class="hint" id="remoteId" hidden>Ta pièce d'identité sera vérifiée au studio le jour de la séance : pense à l'apporter.</p>
@@ -195,7 +201,7 @@ textarea{min-height:70px;resize:vertical}
 <script src="pdf-lib.min.js"></script>
 <script>
 {
-const VERSION='2026-11-25e';
+const VERSION='2026-11-25f';
 const STUDIO='VR Body Art – 12 rue Duguey du Fay, 60600 Clermont';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -212,6 +218,11 @@ const FN='https://djuvwmxuplkzplahjcdm.supabase.co/functions/v1/consent-public';
 const KEY='sb_publishable_RY-y4vH1IXXm5Cto2TQe6A_SWdEJ43O';
 const presta=()=>document.querySelector('input[name=presta]:checked').value;
 
+const ZGROUPS=[['Oreille',['Lobe','Hélix','Tragus','Conch','Daith','Rook','Industriel']],['Visage',['Narine','Septum','Arcade','Bridge']],['Bouche',['Langue','Labret / lèvre','Smiley','Medusa']],['Corps',['Nombril','Téton','Surface / dermal','Autre']]];
+const ORAL=['Langue','Labret / lèvre','Smiley','Medusa'];
+$('zones').innerHTML=ZGROUPS.map(([g,l])=>`<span class="zg">${g}</span>`+l.map(z=>`<label><input type="checkbox" class="zn" value="${esc(z)}"> ${esc(z)}</label>`).join('')).join('');
+const zonesSel=()=>[...document.querySelectorAll('.zn:checked')].map(i=>i.value);
+const fichesOf=d=>d.prestation==='tatouage'?['tatouage']:[...new Set((d.zones||[]).map(z=>ORAL.includes(z)?'buccal':'piercing'))];
 const QUESTIONS=[
  ['allergies',"Allergies connues (latex, nickel ou métaux, pigments, antiseptiques, pansements, crèmes, médicaments…)",'all'],
  ['anticoag',"Traitement anticoagulant, ou aspirine / anti-inflammatoires pris dans les 48 dernières heures",'all'],
@@ -275,7 +286,7 @@ function declarations(){
    "J'ai été informé(e) du caractère douloureux de l'acte ainsi que des risques possibles.",
    "J'ai répondu sincèrement au questionnaire de santé. Je m'engage à signaler tout changement avant l'acte. Je reconnais qu'une fausse déclaration ou une omission engage ma seule responsabilité.",
    "Je ne suis pas sous l'emprise de l'alcool, de drogues ou de médicaments altérant ma vigilance.",
-   p==='tatouage'?"J'ai validé le dessin, son emplacement, sa taille et, le cas échéant, l'orthographe des textes.":"J'ai validé l'emplacement du piercing et le bijou posé.",
+   p==='tatouage'?"J'ai validé le dessin, son emplacement, sa taille et, le cas échéant, l'orthographe des textes.":"J'ai validé l'emplacement du ou des piercings.",
    p==='tatouage'?"Je sais que le tatouage est permanent et que son rendu final dépend de ma peau et du respect des soins.":"Je sais que le piercing peut laisser une marque définitive, et que sa cicatrisation dépend de ma peau et du respect des soins.",
    "Je m'engage à suivre les consignes de soin remises par le studio."
   ];
@@ -290,7 +301,7 @@ function renderTexts(){
   $('infoTxt').innerHTML=INFO[p].map(([h,l])=>`<h3>${esc(h)}</h3><ul>${l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`).join('');
   const prev=[...document.querySelectorAll('#decl input')].map(i=>i.checked);
   $('decl').innerHTML=declarations().map((t,i)=>`<label class="chk"><input type="checkbox" class="dcl" ${prev[i]?'checked':''}><span>${esc(t)}</span></label>`).join('');
-  $('descLbl').textContent=p==='tatouage'?'Tatouage : motif, emplacement, taille':'Piercing : emplacement et bijou';
+  $('descWrap').hidden=p!=='tatouage';$('zonesWrap').hidden=p!=='piercing';
   document.querySelectorAll('.ptype').forEach(s=>s.textContent=p);
   document.querySelectorAll('.pwho').forEach(s=>s.textContent=p==='piercing'?'VR Body Art et Ameï Piercing':'VR Body Art');
   document.querySelectorAll('.pwhere').forEach(s=>s.textContent=p==='piercing'?'leurs sites et réseaux sociaux':'son site et ses réseaux sociaux');
@@ -322,7 +333,10 @@ document.querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>pads[b.datase
 function collect(){
   const err=[];const v=id=>$(id).value.trim();
   const minor=checkMinor();
-  if(!v('desc'))err.push('la description de la prestation');
+  const zs=zonesSel();
+  if(presta()==='tatouage'&&!v('desc'))err.push('la description du tatouage');
+  if(presta()==='piercing'&&!zs.length)err.push('le ou les emplacements du piercing');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email')))err.push("l'e-mail");
   if(!v('nom')||!v('prenom'))err.push('le nom et le prénom');
   if(!parse(v('naiss')))err.push('la date de naissance');
   if(!REMOTE&&(!v('pType')||v('pNum').length<2))err.push("la vérification de la pièce d'identité");
@@ -338,7 +352,7 @@ function collect(){
     if(!pads.c2.used)err.push('la signature du représentant légal');
     rep={nom:v('rNom'),qualite:v('rQual'),telephone:v('rTel'),piece:v('rPiece'),mention:v('lu2')}}
   return{err,data:{prestation:presta(),praticien:v('praticien'),date_seance:v('dSeance'),client_nom:v('nom'),client_prenom:v('prenom'),date_naissance:v('naiss'),
-    adresse:v('adresse'),telephone:v('tel'),email:v('email'),piece_identite:REMOTE?'À vérifier au studio le jour de la séance':`${v('pType')} – ${v('pNum').toUpperCase()}`,mineur:minor,representant:rep,description:v('desc'),
+    adresse:v('adresse'),telephone:v('tel'),email:v('email'),piece_identite:REMOTE?'À vérifier au studio le jour de la séance':`${v('pType')} – ${v('pNum').toUpperCase()}`,mineur:minor,representant:rep,description:presta()==='piercing'?zs.join(', '):v('desc'),zones:presta()==='piercing'?zs:null,
     sante,declarations:declarations(),photos_ok:$('photos').checked,mention:v('lu')}};
 }
 
@@ -359,7 +373,7 @@ async function buildPdf(id,d,signedAt){
   text(`Attestation de consentement - ${d.prestation==='tatouage'?'Tatouage':'Piercing'}`,{f:B,s:18,gap:6});
   text(`Document n° ${id} - version du texte ${VERSION}`,{s:8.5,c:rgb(.4,.4,.4)});
   h('Prestation');
-  text(`Date de la séance : ${frl(parse(d.date_seance))}`);text(`Réalisée par : ${d.praticien}`);text(`Description : ${d.description}`);
+  text(`Date de la séance : ${frl(parse(d.date_seance))}`);text(`Réalisée par : ${d.praticien}`);text(d.prestation==='piercing'?`Emplacement(s) : ${d.description}`:`Description : ${d.description}`);
   h('Client');
   text(`${d.client_prenom} ${d.client_nom}, né(e) le ${frl(parse(d.date_naissance))}`);
   if(d.adresse)text(`Adresse : ${d.adresse}`);if(d.telephone)text(`Téléphone : ${d.telephone}`);if(d.email)text(`E-mail : ${d.email}`);
@@ -386,8 +400,10 @@ async function buildPdf(id,d,signedAt){
 const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 const uuid=()=>crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
 let lastPdf=null;
-const soinsUrl=d=>'https://vrbodyart.fr/soins/#'+(d.prestation==='tatouage'?'tatouage':/langue|l[eè]vre|labret|smiley|frenulum|frein|medusa|monroe|madonna|snake|bouche|buccal/i.test(d.description||'')?'buccal':'piercing');
-async function shareSoins(d,btn){const url=soinsUrl(d);const msg=`Voici ta fiche de soins ${d.prestation==='tatouage'?'pour ton tatouage':'pour ton piercing'} : ${url}`;
+const FL={tatouage:'Fiche de soins tatouage',piercing:'Soins piercing',buccal:'Soins piercing buccal'};
+const soinsLinks=d=>fichesOf(d).map(f=>({f,url:'https://vrbodyart.fr/soins/#'+f,label:FL[f]}));
+const soinsUrl=d=>soinsLinks(d)[0].url;
+async function shareSoins(d,btn){const L=soinsLinks(d);const url=L[0].url;const msg=`Voici ${L.length>1?'tes fiches':'ta fiche'} de soins : `+L.map(x=>`${x.label} : ${x.url}`).join(' — ');
   if(navigator.share){try{await navigator.share({text:msg});return}catch{}}
   try{await navigator.clipboard.writeText(msg);btn.textContent='Lien copié ✓'}catch{window.open(url,'_blank','noopener')}}
 function shareOrDownload(bytes,name){
@@ -408,12 +424,12 @@ $('f').onsubmit=async e=>{
     if(REMOTE){
       let bin='';const u8=new Uint8Array(bytes);for(let i=0;i<u8.length;i+=8192)bin+=String.fromCharCode(...u8.subarray(i,i+8192));
       const {mention,...row}=data;
-      const r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY,Authorization:'Bearer '+KEY},body:JSON.stringify({token:TOKEN,id,pdf:btoa(bin),data:{...row,texte_version:VERSION}})});
+      const r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY,Authorization:'Bearer '+KEY},body:JSON.stringify({token:TOKEN,id,pdf:btoa(bin),data:{...row,fiches:fichesOf(data),texte_version:VERSION}})});
       const j=await r.json().catch(()=>({}));
       if(!r.ok)throw new Error(ERRS[j.error]||'erreur '+r.status);
       const name=`consentement-${data.client_nom}-${data.client_prenom}-${data.date_seance}.pdf`.replace(/[^\w.-]+/g,'_');
       lastPdf={bytes,name};$('f').hidden=true;$('done').hidden=false;
-      $('done').innerHTML=`<h2>C'est signé, merci !</h2><p>Ton consentement est bien enregistré chez VR Body Art. Pense à venir avec ta pièce d'identité le jour de la séance.</p><div class="acts"><a class="btn" href="${esc(soinsUrl(data))}" target="_blank" rel="noopener" style="text-decoration:none">Voir mes soins</a><button class="btn ghost" type="button" id="share">Télécharger ma copie</button></div>`;
+      $('done').innerHTML=`<h2>C'est signé, merci !</h2><p>Ton consentement est bien enregistré chez VR Body Art${j.email?' et une copie vient de partir sur ta boîte mail':''}. Pense à venir avec ta pièce d'identité le jour de la séance.</p><div class="acts">${soinsLinks(data).map(x=>`<a class="btn" href="${esc(x.url)}" target="_blank" rel="noopener" style="text-decoration:none">${esc(x.label)}</a>`).join('')}<button class="btn ghost" type="button" id="share">Télécharger ma copie</button></div>`;
       $('share').onclick=()=>shareOrDownload(lastPdf.bytes,lastPdf.name);scrollTo({top:0,behavior:'smooth'});return;
     }
     const sha=hex(await crypto.subtle.digest('SHA-256',bytes));
@@ -421,17 +437,20 @@ $('f').onsubmit=async e=>{
     const up=await sb.storage.from('consentements').upload(path,new Blob([bytes],{type:'application/pdf'}),{contentType:'application/pdf',upsert:false});
     if(up.error)throw new Error('envoi du PDF : '+up.error.message);
     const {mention,...row}=data;
-    const ins=await sb.from('consentements').insert({id,...row,representant:data.representant,texte_version:VERSION,pdf_path:path,pdf_sha256:sha,user_agent:navigator.userAgent.slice(0,300)});
+    const ins=await sb.from('consentements').insert({id,...row,fiches:fichesOf(data),representant:data.representant,texte_version:VERSION,pdf_path:path,pdf_sha256:sha,user_agent:navigator.userAgent.slice(0,300)});
     if(ins.error)throw new Error('registre : '+ins.error.message);
     if(data.prestation==='tatouage'&&$('addRet').checked){
       await sb.from('retouches').insert({id:uuid(),nom:`${data.client_prenom} ${data.client_nom}`,contact:data.telephone||data.email||null,zone:data.description.slice(0,200),date_tatouage:data.date_seance,etat:''});
     }
+    $('go').textContent='Envoi du mail au client…';
+    const mr=await sb.functions.invoke('consent-mail',{body:{id}}).catch(()=>({error:1}));
+    const mailOk=!mr.error&&mr.data&&mr.data.ok;
     const name=`consentement-${data.client_nom}-${data.client_prenom}-${data.date_seance}.pdf`.replace(/[^\w.-]+/g,'_');
     lastPdf={bytes,name};
     $('f').hidden=true;$('done').hidden=false;
-    $('done').innerHTML=`<h2>Signé et archivé</h2><p>Le consentement de <b>${esc(data.client_prenom)} ${esc(data.client_nom)}</b> est enregistré dans ton registre le ${esc(signedAt.toLocaleString('fr-FR'))}.</p>
+    $('done').innerHTML=`<h2>Signé et archivé</h2><p><b>${mailOk?'✓ Mail envoyé à '+esc(data.email)+' avec la copie et '+(fichesOf(data).length>1?'les fiches':'la fiche')+' de soins.':'⚠ Le mail n\'est pas parti : tu pourras le renvoyer depuis le registre.'}</b></p><p>Le consentement de <b>${esc(data.client_prenom)} ${esc(data.client_nom)}</b> est enregistré dans ton registre le ${esc(signedAt.toLocaleString('fr-FR'))}.</p>
       <p class="meta">Empreinte SHA-256 : <code>${sha}</code></p>
-      <div class="acts"><button class="btn" type="button" id="share">Envoyer une copie au client</button><button class="btn" type="button" id="soins">Envoyer la fiche de soins</button><button class="btn ghost" type="button" id="again">Nouveau consentement</button></div>`;
+      <div class="acts"><button class="btn ghost" type="button" id="share">Télécharger le PDF</button><button class="btn ghost" type="button" id="soins">Partager la fiche de soins</button><button class="btn ghost" type="button" id="again">Nouveau consentement</button></div>`;
     $('soins').onclick=e=>shareSoins(data,e.currentTarget);
     $('share').onclick=()=>shareOrDownload(lastPdf.bytes,lastPdf.name);
     $('again').onclick=()=>location.reload();
@@ -443,17 +462,19 @@ $('f').onsubmit=async e=>{
 // registre
 let REG=[];
 async function loadReg(){
-  const {data,error}=await sb.from('consentements').select('id,created_at,prestation,client_nom,client_prenom,date_seance,mineur,pdf_path,pdf_sha256,mode,identite_verifiee_at,identite_verifiee_piece').order('created_at',{ascending:false});
+  const {data,error}=await sb.from('consentements').select('id,created_at,prestation,client_nom,client_prenom,date_seance,mineur,pdf_path,pdf_sha256,mode,identite_verifiee_at,identite_verifiee_piece,email,email_envoye_at,email_erreur').order('created_at',{ascending:false});
   if(error){$('list').innerHTML='<div class="empty">Impossible de charger le registre.</div>';return}
   REG=data;renderReg();
 }
 function renderReg(){
   const q=$('q').value.trim().toLowerCase();
   const rows=REG.filter(r=>!q||`${r.client_prenom} ${r.client_nom}`.toLowerCase().includes(q));
-  $('list').innerHTML=rows.length?rows.map(r=>`<div class="item"><div><p><b>${esc(r.client_prenom)} ${esc(r.client_nom)}</b>${r.mineur?' · mineur':''}</p><p class="meta">${r.prestation==='tatouage'?'Tatouage':'Piercing'} · séance du ${esc(frl(parse(r.date_seance)))} · signé le ${esc(new Date(r.created_at).toLocaleString('fr-FR'))}${r.mode==='distance'?' · à distance':''}</p>${r.mode==='distance'?(r.identite_verifiee_at?`<p class="meta">Identité vérifiée le ${esc(new Date(r.identite_verifiee_at).toLocaleString('fr-FR'))} (${esc(r.identite_verifiee_piece)})</p>`:`<p class="err" style="font-size:14px">Identité à vérifier au studio</p><div class="acts" style="margin-top:6px"><select class="vt" style="width:auto"><option>Carte d'identité</option><option>Passeport</option><option>Permis de conduire</option><option>Titre de séjour</option></select><input class="vn" maxlength="4" placeholder="4 derniers car." style="width:140px"><button class="btn small" type="button" data-v="${esc(r.id)}">Identité vérifiée</button></div>`):''}</div><button class="btn ghost small" type="button" data-p="${esc(r.id)}">Ouvrir le PDF</button></div>`).join(''):'<div class="empty">Aucun consentement signé pour le moment.</div>';
+  $('list').innerHTML=rows.length?rows.map(r=>`<div class="item"><div><p><b>${esc(r.client_prenom)} ${esc(r.client_nom)}</b>${r.mineur?' · mineur':''}</p><p class="meta">${r.prestation==='tatouage'?'Tatouage':'Piercing'} · séance du ${esc(frl(parse(r.date_seance)))} · signé le ${esc(new Date(r.created_at).toLocaleString('fr-FR'))}${r.mode==='distance'?' · à distance':''}</p><p class="meta">${r.email_envoye_at?'✓ Mail envoyé le '+esc(new Date(r.email_envoye_at).toLocaleString('fr-FR')):(r.email?'Mail non envoyé':'Pas d\'e-mail')}${r.email?` <button class="btn ghost small" type="button" data-m="${esc(r.id)}">${r.email_envoye_at?'Renvoyer':'Envoyer'} le mail</button>`:''}</p>${r.mode==='distance'?(r.identite_verifiee_at?`<p class="meta">Identité vérifiée le ${esc(new Date(r.identite_verifiee_at).toLocaleString('fr-FR'))} (${esc(r.identite_verifiee_piece)})</p>`:`<p class="err" style="font-size:14px">Identité à vérifier au studio</p><div class="acts" style="margin-top:6px"><select class="vt" style="width:auto"><option>Carte d'identité</option><option>Passeport</option><option>Permis de conduire</option><option>Titre de séjour</option></select><input class="vn" maxlength="4" placeholder="4 derniers car." style="width:140px"><button class="btn small" type="button" data-v="${esc(r.id)}">Identité vérifiée</button></div>`):''}</div><button class="btn ghost small" type="button" data-p="${esc(r.id)}">Ouvrir le PDF</button></div>`).join(''):'<div class="empty">Aucun consentement signé pour le moment.</div>';
 }
 $('q').oninput=renderReg;
 $('list').onclick=async e=>{
+  const mb=e.target.closest('[data-m]');
+  if(mb){mb.disabled=true;mb.textContent='Envoi…';const r=await sb.functions.invoke('consent-mail',{body:{id:mb.dataset.m}}).catch(()=>({error:1}));if(!r.error&&r.data&&r.data.ok)loadReg();else{mb.disabled=false;mb.textContent='Échec, réessaie'}return}
   const vb=e.target.closest('[data-v]');
   if(vb){const box=vb.parentElement;const n=box.querySelector('.vn').value.trim().toUpperCase();if(n.length<2){box.querySelector('.vn').focus();return}
     vb.disabled=true;const {error}=await sb.rpc('verifier_identite',{p_id:vb.dataset.v,p_piece:`${box.querySelector('.vt').value} – ${n}`});

@@ -91,6 +91,10 @@ nav{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
   <symbol id="i-scratch" viewBox="0 0 32 32"><path d="M8 24c3-5 6-9 10-12M11 26c3-5 6-9 10-12M14 28c3-5 6-9 10-12"/><path d="M4 5l24 22"/></symbol>
   <symbol id="i-shirt" viewBox="0 0 32 32"><path d="M11 4l-6 4 3 5 3-2v16h10V11l3 2 3-5-6-4c-1 2-3 3-5 3s-4-1-5-3z"/></symbol>
   <symbol id="i-doc" viewBox="0 0 32 32"><path d="M12 4h8v6h6v8h-6v6h-8v-6H6v-8h6z"/></symbol>
+  <symbol id="i-film" viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="18" rx="3"/><path d="M9 11h14M9 15h10M9 19h12"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 32 32"><circle cx="16" cy="16" r="11"/><path d="M16 9v7l5 3"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 32 32"><path d="M16 4c5 7 8 11 8 15a8 8 0 0 1-16 0c0-4 3-8 8-15z"/><path d="M12 19a4 4 0 0 0 4 4"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 32 32"><path d="M16 4l13 23H3z"/><path d="M16 13v6M16 23v.5"/></symbol>
   <symbol id="i-retouche" viewBox="0 0 32 32"><path d="M6 26l4-1 14-14-3-3L7 22zM19 10l3 3"/><path d="M23 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></symbol>
 </svg>
 
@@ -104,6 +108,7 @@ nav{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
       <path d="M58 66c10-14 26-22 40-22M162 66c-10-14-26-22-40-22"/><path d="M58 154c10 14 26 22 40 22M162 154c-10 14-26 22-40 22"/>
       <path d="M100 44c4-6 8-8 10-8s6 2 10 8M100 176c4 6 8 8 10 8s6-2 10-8"/>
     </g>
+    <g id="medalLogo" style="color:#fff;display:none"><svg x="70" y="40" width="80" height="88" viewBox="0 0 962 1050"><use href="#vrlogo"/></svg></g>
     <text x="110" y="112" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-style="italic" font-weight="600" font-size="44" fill="url(#g)" id="medalTxt">Soins</text>
     <text x="110" y="140" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="12.5" letter-spacing="3" fill="#d4af6a" id="medalSub">VR BODY ART</text>
     <g fill="url(#g)"><circle cx="84" cy="156" r="5"/><circle cx="136" cy="156" r="5"/></g><rect x="88" y="154" width="44" height="4" rx="2" fill="url(#g)"/>
@@ -119,19 +124,32 @@ nav{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 </div></nav>
 
 <main id="main">
-<section id="tatouage" data-medal="Soins|VR BODY ART" data-sub="Tatouage · VR Body Art">
+<section id="tatouage" data-medal="LOGO|VR BODY ART" data-sub="Tatouage · VR Body Art">
   <p class="lead">Ton tatouage est une petite plaie pendant sa cicatrisation : ces gestes l'aident à bien guérir et à garder un trait net.</p>
+  <h2>Juste après la séance</h2>
+  <div class="card">
+    <div class="it"><span class="ic"><svg><use href="#i-film"/></svg></span><div><b>Film Thermalis (seconde peau)</b><p>Garde-le jusqu'à <strong>48 heures</strong>. Retire-le plus tôt si du liquide (lymphe, sang, encre) coule autour du film ou s'il se décolle.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-clock"/></svg></span><div><b>Film alimentaire (cellophane)</b><p>À garder <strong>2 heures maximum</strong>, pas plus.</p></div></div>
+  </div>
+  <h2>Cicatrisation sèche</h2>
+  <div class="card green"><div class="it"><span class="ic"><svg><use href="#i-drop"/></svg></span><div><b>Ma méthode</b><p>La cicatrisation se fait à sec. Si besoin, quand la peau tire ou devient très sèche, applique une fine couche d'<strong>huile de coco</strong> ou de <strong>Cicaplast</strong>, conseillés par mes soins.</p></div></div></div>
   <h2>Les bons réflexes</h2>
   <div class="card">
-    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-hands"/></svg></span><div><b>Mains propres</b><p>Lave-toi toujours les mains avant de toucher ton tatouage.</p></div></div>
-    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-bottle"/></svg></span><div><b>Nettoyage</b><p>Nettoie à l'eau et au savon doux, puis sèche en tamponnant, sans frotter.</p></div></div>
-    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-scratch"/></svg></span><div><b>Ne pas gratter</b><p>Ne gratte pas et n'arrache jamais les petites croûtes : elles tombent seules.</p></div></div>
-    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-swim"/></svg></span><div><b>Pas de baignade</b><p>Pas de bain, piscine, mer, sauna ou hammam jusqu'à cicatrisation complète.</p></div></div>
-    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-sun"/></svg></span><div><b>Soleil</b><p>Pas de soleil ni d'UV pendant la cicatrisation, puis protège ton tatouage avec un écran total.</p></div></div>
-    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-shirt"/></svg></span><div><b>Vêtements</b><p>Porte des vêtements propres et amples qui ne frottent pas sur la zone.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-hands"/></svg></span><div><b>Mains propres</b><p>Lave-toi toujours les mains avant de toucher ton tatouage.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-bottle"/></svg></span><div><b>Nettoyage</b><p>Nettoie à l'eau et au savon doux, puis sèche en tamponnant, sans frotter.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-scratch"/></svg></span><div><b>Ne pas gratter</b><p>Ne gratte pas et n'arrache jamais les petites croûtes : elles tombent seules.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-swim"/></svg></span><div><b>Pendant 1 mois</b><p>Pas de bain, piscine, mer, sauna ni hammam, et <strong>pas de salle de sport</strong>.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-sun"/></svg></span><div><b>Soleil</b><p>Pas de soleil ni d'UV pendant la cicatrisation, puis protège ton tatouage avec un écran total.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-shirt"/></svg></span><div><b>Vêtements</b><p>Porte des vêtements propres et amples qui ne frottent pas sur la zone.</p></div></div>
+  </div>
+  <h2>Les risques à connaître</h2>
+  <div class="card">
+    <div class="it"><span class="ic"><svg><use href="#i-doc"/></svg></span><div><b>Infection</b><p>Toute plaie peut s'infecter si l'hygiène n'est pas respectée pendant la cicatrisation.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-alert"/></svg></span><div><b>Allergie</b><p>Les pigments, le latex ou certains produits de soin peuvent provoquer une réaction, parfois longtemps après.</p></div></div>
+    <div class="it"><span class="ic"><svg><use href="#i-scratch"/></svg></span><div><b>Cicatrisation difficile</b><p>Gratter, arracher les croûtes ou ne pas suivre les soins peut abîmer le trait ou faire partir l'encre.</p></div></div>
   </div>
   <h2>Ta retouche</h2>
-  <div class="card green"><div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-retouche"/></svg></span><div><b>1 mois après la séance</b><p>Tu as ensuite <strong>2 semaines</strong> pour me contacter et programmer ta retouche, comprise dans le prix. Passé ce délai, elle n'est plus comprise.</p></div></div></div>
+  <div class="card green"><div class="it"><span class="ic"><svg><use href="#i-retouche"/></svg></span><div><b>1 mois après la séance</b><p>Tu as ensuite <strong>2 semaines</strong> pour me contacter et programmer ta retouche, comprise dans le prix. Passé ce délai, elle n'est plus comprise.</p></div></div></div>
   <div class="warn"><strong>Important</strong><p>Rougeur qui s'étend, chaleur, gonflement, pus ou fièvre : consulte un médecin et préviens-moi.</p></div>
   <p class="sign">Valentin · VR Body Art</p>
 </section>
@@ -198,7 +216,8 @@ const show=()=>{
   for(const id of ids)document.getElementById(id).hidden=id!==cur;
   document.querySelectorAll('.tab').forEach(a=>{if(a.dataset.t===cur)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   const s=document.getElementById(cur);const [m,sub]=s.dataset.medal.split('|');
-  document.getElementById('medalTxt').textContent=m;document.getElementById('medalSub').textContent=sub;
+  const logo=m==='LOGO';document.getElementById('medalLogo').style.display=logo?'':'none';document.getElementById('medalTxt').style.display=logo?'none':'';document.getElementById('medalSub').setAttribute('y',logo?'145':'140');
+  if(!logo)document.getElementById('medalTxt').textContent=m;document.getElementById('medalSub').textContent=sub;
   document.getElementById('sub').textContent=s.dataset.sub;
   document.title=`Soins ${cur==='tatouage'?'tatouage':cur==='buccal'?'piercing buccal':'piercing'} · VR Body Art`;
 };
@@ -209,6 +228,8 @@ document.getElementById('print').onclick=()=>window.print();
 addEventListener('hashchange',setCta);setCta();
 addEventListener('hashchange',()=>{show();scrollTo({top:0,behavior:'smooth'})});
 show();
+// logo VR Body Art repris du site
+fetch('/',{cache:'force-cache'}).then(r=>r.text()).then(t=>{const d=new DOMParser().parseFromString(t,'text/html').getElementById('vrlogo');if(d)document.querySelector('svg[aria-hidden=true]').appendChild(document.importNode(d,true))}).catch(()=>{});
 }
 </script>
 </body>
