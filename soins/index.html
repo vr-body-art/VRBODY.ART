@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiches de soins · VR Body Art</title>
+<meta name="description" content="Conseils de soins après un tatouage ou un piercing chez VR Body Art et Ameï Piercing, Clermont.">
+<meta name="theme-color" content="#0c0b0a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Work+Sans:wght@400;500&display=swap">
+<style>
+/* VOICE: carte de soins remise au comptoir d'un salon chic, claire et rassurante
+   IDEA: la carte noire et or glissée dans le sac du client après la séance
+   PICTURE: un médaillon doré par onglet, puis des fiches à icônes cerclées d'or
+   COLOUR and TYPE: noir profond, or #d4af6a, vert émeraude sombre; Cinzel + Cormorant Garamond + Work Sans
+   LAYOUT: bandeau médaillon, onglets en pastilles, une colonne de cartes de 760px */
+:root{color-scheme:dark;--bg:#0c0b0a;--panel:#151311;--line:#3a3022;--gold:#d4af6a;--gold2:#f1d79a;--ink:#f3ece0;--mut:#b9ad98;--green:#0f3b2e}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Work Sans",system-ui,sans-serif;overflow-x:clip;
+  background-image:radial-gradient(ellipse at 20% 0%,#1c2a22 0,transparent 55%),radial-gradient(ellipse at 90% 30%,#241c10 0,transparent 50%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cpath d='M0 120 Q120 90 180 160 T400 140M60 400 Q140 300 260 320 T400 250M0 300 Q60 260 120 280' stroke='%23d4af6a' stroke-opacity='.07' fill='none'/%3E%3C/svg%3E");background-attachment:fixed}
+header{text-align:center;padding:clamp(28px,6vw,56px) 16px 12px}
+.medal{width:clamp(150px,34vw,210px);height:auto;display:block;margin:0 auto}
+h1{font:600 clamp(30px,6.5vw,48px)/1.05 Cinzel,Georgia,serif;letter-spacing:.04em;margin:14px 0 4px;color:var(--gold2);text-wrap:balance}
+.sub{font:500 italic clamp(19px,3.6vw,23px)/1.3 "Cormorant Garamond",Georgia,serif;color:var(--gold);margin:0}
+nav{position:sticky;top:0;z-index:5;background:linear-gradient(var(--bg) 70%,transparent);padding:14px 12px 18px}
+.tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;max-width:760px;margin:0 auto}
+.tab{font:600 15px Cinzel,Georgia,serif;letter-spacing:.06em;color:var(--gold2);background:#12100e;border:1px solid var(--line);border-radius:999px;padding:11px 18px;min-height:44px;text-decoration:none;display:inline-flex;align-items:center}
+.tab[aria-current=page]{background:var(--gold);color:#16120b;border-color:var(--gold)}
+.tab:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+main{max-width:760px;margin:0 auto;padding:0 16px 64px}
+section[hidden]{display:none}
+.lead{font:500 italic 21px/1.4 "Cormorant Garamond",Georgia,serif;color:var(--mut);text-align:center;margin:4px auto 22px;max-width:36em}
+h2{font:600 22px/1.2 Cinzel,Georgia,serif;letter-spacing:.05em;color:var(--gold2);text-align:center;margin:34px 0 14px;display:flex;align-items:center;gap:14px}
+h2::before,h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+h2::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.card{background:linear-gradient(180deg,#171512,#100f0d);border:1px solid var(--line);border-radius:18px;padding:6px 18px}
+.it{display:grid;grid-template-columns:58px minmax(0,1fr);gap:14px;align-items:center;padding:14px 0;border-top:1px solid #2a241b}
+.it:first-child{border-top:0}
+.ic{width:58px;height:58px;border-radius:50%;border:1.5px solid var(--gold);display:grid;place-items:center;background:radial-gradient(circle,#1d1912,#0f0d0b)}
+.ic svg{width:30px;height:30px;stroke:var(--gold);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.it b{display:block;font:600 italic 21px/1.2 "Cormorant Garamond",Georgia,serif;color:var(--gold2);margin-bottom:2px}
+.it p{margin:0;color:var(--ink)}
+ol.steps{list-style:none;margin:0;padding:6px 0;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:46px minmax(0,1fr);gap:14px;align-items:center;padding:10px 0}
+ol.steps li::before{content:counter(s);width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font:600 22px Cinzel,Georgia,serif;color:#16120b;background:radial-gradient(circle at 35% 30%,var(--gold2),var(--gold) 60%,#9a7a3c)}
+.when{font:500 italic 20px "Cormorant Garamond",Georgia,serif;color:var(--gold);text-align:center;margin:8px 0 4px}
+.warn{margin-top:26px;border:1.5px solid var(--gold);border-radius:18px;padding:18px 20px;text-align:center;background:linear-gradient(180deg,#1a1610,#0f0d0b)}
+.warn strong{font:600 20px Cinzel,Georgia,serif;letter-spacing:.06em;color:var(--gold2);display:block;margin-bottom:6px}
+.warn p{margin:0;font:500 italic 20px/1.4 "Cormorant Garamond",Georgia,serif}
+.green{background:linear-gradient(180deg,#12291f,#0c1a14);border-color:#2c5a47}
+.sign{font:600 italic 26px "Cormorant Garamond",Georgia,serif;color:var(--gold);text-align:center;margin:30px 0 0}
+footer{text-align:center;color:var(--mut);font-size:14px;padding:0 16px 40px}
+footer a{color:var(--gold);text-decoration:none}
+a,button{cursor:pointer}
+.tab{transition:background-color .2s ease,color .2s ease,border-color .2s ease}
+.tab:hover{border-color:var(--gold)}
+nav{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ic svg{pointer-events:none}
+.tools{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:30px 0 0}
+.tool{font:500 15px "Work Sans",sans-serif;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:12px;padding:11px 16px;min-height:44px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:border-color .2s ease,background-color .2s ease}
+.tool:hover{border-color:var(--gold);background:#16130f}
+.tool:focus-visible,.cta:focus-visible{outline:3px solid var(--gold2);outline-offset:2px}
+.tool svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.contact{margin-top:28px;text-align:center}
+.contact p{margin:0 0 12px;color:var(--mut)}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 22px;border-radius:999px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#16120b;font:600 15px Cinzel,Georgia,serif;letter-spacing:.05em;text-decoration:none;margin:4px;transition:filter .2s ease}
+.cta:hover{filter:brightness(1.08)}
+.upd{display:block;text-align:center;color:var(--mut);font-size:13px;margin-top:22px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--gold);color:#16120b;padding:10px 14px;border-radius:8px;z-index:9}
+.skip:focus{left:8px}
+@media print{body{background:#fff;color:#111;font-size:12pt}nav,.tools,.contact,.skip,footer a{display:none}section{animation:none!important}.card,.warn{background:#fff;border-color:#c9b48a;break-inside:avoid}.it b,h1,h2,.sign,.when,.warn strong{color:#5a4515}.it{border-color:#e6dcc7}h2{break-after:avoid}.warn p{color:#111}.it p,.lead{color:#111}h2::before,h2::after{background:#c9b48a}.medal{width:120px}header{padding-top:0}}
+@media(max-width:520px){.it{grid-template-columns:48px minmax(0,1fr)}.ic{width:48px;height:48px}.ic svg{width:25px;height:25px}body{font-size:16px}}
+@media(prefers-reduced-motion:no-preference){section:not([hidden]){animation:in .35s ease-out}@keyframes in{from{opacity:0;transform:translateY(6px)}}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Aller aux conseils</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-hands" viewBox="0 0 32 32"><path d="M9 18v-8a1.6 1.6 0 0 1 3.2 0v6M12.2 15V7.5a1.6 1.6 0 0 1 3.2 0V15M15.4 14V8.5a1.6 1.6 0 0 1 3.2 0V16M18.6 15v-3a1.6 1.6 0 0 1 3.2 0v7c0 5-3 8-7 8-3 0-4.6-1.4-6.2-4L5.4 18a1.6 1.6 0 0 1 2.7-1.7L9 18"/><path d="M24 5l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 32 32"><path d="M4 23V9M4 18h24v5M28 18v-3a4 4 0 0 0-4-4H14v7"/><circle cx="9" cy="14" r="2.5"/><path d="M3 5l26 22"/></symbol>
+  <symbol id="i-swim" viewBox="0 0 32 32"><path d="M4 22c2.5 0 2.5-1.6 5-1.6s2.5 1.6 5 1.6 2.5-1.6 5-1.6 2.5 1.6 5 1.6 2.5-1.6 5-1.6M4 27c2.5 0 2.5-1.6 5-1.6s2.5 1.6 5 1.6 2.5-1.6 5-1.6 2.5 1.6 5 1.6"/><circle cx="21" cy="9" r="2.4"/><path d="M8 18l6-6 4 3 3 3"/><path d="M3 5l26 22"/></symbol>
+  <symbol id="i-hand-no" viewBox="0 0 32 32"><circle cx="16" cy="16" r="5"/><path d="M16 11v-3M16 24v-3M11 16H8M24 16h-3"/><path d="M5 5l22 22"/></symbol>
+  <symbol id="i-bottle" viewBox="0 0 32 32"><path d="M12 4h8v4l3 4v15a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2V12l3-4z"/><path d="M12 8h8M13 17c1.5-1.5 4.5-1.5 6 0-1 3-2 5-3 6-1-1-2-3-3-6z"/></symbol>
+  <symbol id="i-food" viewBox="0 0 32 32"><path d="M9 4v8a3 3 0 0 0 6 0V4M12 4v24M22 28V4c-3 2-4 6-4 10h4"/></symbol>
+  <symbol id="i-glass" viewBox="0 0 32 32"><path d="M6 5h9l-1 7a3.5 3.5 0 0 1-7 0zM10.5 15v9M7 24h7"/><path d="M18 27L27 5"/><path d="M19 21h9v3h-9zM25 21c0-2 2-2 2-4"/></symbol>
+  <symbol id="i-lips" viewBox="0 0 32 32"><path d="M3 16c3-4 6-6 9-5 2 .5 3 1.5 4 1.5s2-1 4-1.5c3-1 6 1 9 5-4 4-8 6-13 6S7 20 3 16zM3 16h26"/><path d="M4 5l24 22"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 32 32"><path d="M16 26s-10-6-10-13a5.5 5.5 0 0 1 10-3 5.5 5.5 0 0 1 10 3c0 7-10 13-10 13z"/><path d="M5 5l22 22"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 32 32"><rect x="4" y="7" width="20" height="19" rx="2"/><path d="M4 13h20M9 4v5M19 4v5"/><circle cx="24" cy="23" r="5"/><path d="M24 21v2.5l1.6 1"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 32 32"><circle cx="16" cy="16" r="5"/><path d="M16 4v3M16 25v3M4 16h3M25 16h3M7.5 7.5l2 2M22.5 22.5l2 2M7.5 24.5l2-2M22.5 9.5l2-2"/></symbol>
+  <symbol id="i-scratch" viewBox="0 0 32 32"><path d="M8 24c3-5 6-9 10-12M11 26c3-5 6-9 10-12M14 28c3-5 6-9 10-12"/><path d="M4 5l24 22"/></symbol>
+  <symbol id="i-shirt" viewBox="0 0 32 32"><path d="M11 4l-6 4 3 5 3-2v16h10V11l3 2 3-5-6-4c-1 2-3 3-5 3s-4-1-5-3z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 32 32"><path d="M12 4h8v6h6v8h-6v6h-8v-6H6v-8h6z"/></symbol>
+  <symbol id="i-retouche" viewBox="0 0 32 32"><path d="M6 26l4-1 14-14-3-3L7 22zM19 10l3 3"/><path d="M23 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></symbol>
+</svg>
+
+<header>
+  <svg class="medal" viewBox="0 0 220 220" role="img" aria-label="VR Body Art · Ameï Piercing">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6e2a8"/><stop offset=".5" stop-color="#d4af6a"/><stop offset="1" stop-color="#8f6d33"/></linearGradient>
+    <radialGradient id="e" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#14392c"/><stop offset="1" stop-color="#07130e"/></radialGradient></defs>
+    <circle cx="110" cy="110" r="96" fill="url(#e)" stroke="url(#g)" stroke-width="3"/>
+    <circle cx="110" cy="110" r="86" fill="none" stroke="#d4af6a" stroke-opacity=".5" stroke-width="1" stroke-dasharray="2 5"/>
+    <g fill="none" stroke="url(#g)" stroke-width="2" stroke-linecap="round">
+      <path d="M58 66c10-14 26-22 40-22M162 66c-10-14-26-22-40-22"/><path d="M58 154c10 14 26 22 40 22M162 154c-10 14-26 22-40 22"/>
+      <path d="M100 44c4-6 8-8 10-8s6 2 10 8M100 176c4 6 8 8 10 8s6-2 10-8"/>
+    </g>
+    <text x="110" y="112" text-anchor="middle" font-family="Cormorant Garamond,Georgia,serif" font-style="italic" font-weight="600" font-size="44" fill="url(#g)" id="medalTxt">Soins</text>
+    <text x="110" y="140" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="12.5" letter-spacing="3" fill="#d4af6a" id="medalSub">VR BODY ART</text>
+    <g fill="url(#g)"><circle cx="84" cy="156" r="5"/><circle cx="136" cy="156" r="5"/></g><rect x="88" y="154" width="44" height="4" rx="2" fill="url(#g)"/>
+  </svg>
+  <h1>Conseils de soins</h1>
+  <p class="sub" id="sub">Choisis ta fiche ci-dessous</p>
+</header>
+
+<nav aria-label="Fiches de soins"><div class="tabs">
+  <a class="tab" href="#tatouage" data-t="tatouage">Tatouage</a>
+  <a class="tab" href="#piercing" data-t="piercing">Piercing</a>
+  <a class="tab" href="#buccal" data-t="buccal">Piercing buccal</a>
+</div></nav>
+
+<main id="main">
+<section id="tatouage" data-medal="Soins|VR BODY ART" data-sub="Tatouage · VR Body Art">
+  <p class="lead">Ton tatouage est une petite plaie pendant sa cicatrisation : ces gestes l'aident à bien guérir et à garder un trait net.</p>
+  <h2>Les bons réflexes</h2>
+  <div class="card">
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-hands"/></svg></span><div><b>Mains propres</b><p>Lave-toi toujours les mains avant de toucher ton tatouage.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-bottle"/></svg></span><div><b>Nettoyage</b><p>Nettoie à l'eau et au savon doux, puis sèche en tamponnant, sans frotter.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-scratch"/></svg></span><div><b>Ne pas gratter</b><p>Ne gratte pas et n'arrache jamais les petites croûtes : elles tombent seules.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-swim"/></svg></span><div><b>Pas de baignade</b><p>Pas de bain, piscine, mer, sauna ou hammam jusqu'à cicatrisation complète.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-sun"/></svg></span><div><b>Soleil</b><p>Pas de soleil ni d'UV pendant la cicatrisation, puis protège ton tatouage avec un écran total.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-shirt"/></svg></span><div><b>Vêtements</b><p>Porte des vêtements propres et amples qui ne frottent pas sur la zone.</p></div></div>
+  </div>
+  <h2>Ta retouche</h2>
+  <div class="card green"><div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-retouche"/></svg></span><div><b>1 mois après la séance</b><p>Tu as ensuite <strong>2 semaines</strong> pour me contacter et programmer ta retouche, comprise dans le prix. Passé ce délai, elle n'est plus comprise.</p></div></div></div>
+  <div class="warn"><strong>Important</strong><p>Rougeur qui s'étend, chaleur, gonflement, pus ou fièvre : consulte un médecin et préviens-moi.</p></div>
+  <p class="sign">Valentin · VR Body Art</p>
+</section>
+
+<section id="piercing" data-medal="Ameï|PIERCING" data-sub="Piercing oreille, nez, nombril, arcade… · Ameï Piercing" hidden>
+  <p class="lead">Oreille, nez, nombril, arcade… Voici tout ce qu'il faut pour que ton piercing cicatrise bien.</p>
+  <h2>Les bons réflexes</h2>
+  <div class="card">
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-hands"/></svg></span><div><b>Mains propres</b><p>Toujours bien te laver les mains avant de faire les soins de ton piercing.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-bed"/></svg></span><div><b>Sommeil</b><p>Ne dors pas dessus.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-swim"/></svg></span><div><b>Baignade</b><p>Pas de bain, piscine, sauna, hammam ni plage pendant <strong>4 semaines</strong>.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-hand-no"/></svg></span><div><b>On n'y touche pas</b><p>Ne joue pas avec ton piercing, ne le fais pas tourner et ne le retire pas.</p></div></div>
+  </div>
+  <h2>Protocole de soin</h2>
+  <div class="card">
+    <ol class="steps">
+      <li>Une fois les mains lavées, frotte un savon au pH neutre dans tes mains.</li>
+      <li>Fais mousser, puis nettoie délicatement le piercing sans faire bouger la tige exprès.</li>
+      <li>Rince au sérum physiologique, avec des pipettes à usage unique.</li>
+      <li>Sèche avec une compresse.</li>
+    </ol>
+    <p class="when">Matin et soir pendant 4 semaines</p>
+  </div>
+  <h2>À éviter absolument</h2>
+  <div class="card"><div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-bottle"/></svg></span><div><b>Pas de Biseptine ni d'alcool</b><p>Ni Biseptine, ni produit à base d'alcool : ça irrite et ça ralentit la cicatrisation.</p></div></div></div>
+  <h2>Le downsizing</h2>
+  <div class="card green"><div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-cal"/></svg></span><div><b>Dans environ 1 mois</b><p>Pense à me recontacter pour le downsizing : on remplace la barre par une plus courte, pour éviter migration, irritations et inconfort, tout en favorisant une bonne cicatrisation.</p></div></div></div>
+  <div class="warn"><strong>Important</strong><p>Rougeur qui s'étend, chaleur, gonflement, pus ou fièvre : consulte un médecin et préviens-moi.</p></div>
+  <p class="sign">Ameï Piercing</p>
+</section>
+
+<section id="buccal" data-medal="Ameï|PIERCING" data-sub="Langue, lèvre, smiley… · Ameï Piercing" hidden>
+  <p class="lead">Langue, lèvre, smiley… Un piercing dans la bouche demande quelques précautions en plus.</p>
+  <h2>Conseils de soins</h2>
+  <div class="card">
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-bottle"/></svg></span><div><b>Bain de bouche sans alcool</b><p>Matin et soir pendant 3 semaines.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-food"/></svg></span><div><b>Alimentation</b><p>Évite les aliments trop chauds et épicés pendant 1 mois.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-glass"/></svg></span><div><b>Alcool et tabac</b><p>Réduis au maximum l'alcool, idéalement arrête-le totalement, et fume le moins possible pendant 1 mois.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-heart"/></svg></span><div><b>Sexualité</b><p>Évite les rapports bucco-génitaux et les baisers avec échange de salive pendant 1 mois.</p></div></div>
+    <div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-lips"/></svg></span><div><b>Manipulation</b><p>Ne retire pas le bijou, ne joue pas avec et ne le fais pas tourner.</p></div></div>
+  </div>
+  <h2>Le downsizing</h2>
+  <div class="card green"><div class="it"><span class="ic" aria-hidden="true"><svg focusable="false"><use href="#i-cal"/></svg></span><div><b>Changement de barre</b><p>Prends rendez-vous pour le changement de barre <strong>1 mois et 2 semaines</strong> après la pose pour un piercing à la langue, afin d'adapter la longueur du bijou quand le gonflement a diminué.</p></div></div></div>
+  <div class="warn"><strong>Important</strong><p>Respecte les conseils de soins pour favoriser une bonne cicatrisation et limiter les risques de complications.</p></div>
+  <p class="sign">Ameï Piercing</p>
+</section>
+  <div class="tools">
+    <button class="tool" type="button" id="copy"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copier le lien de cette fiche</span></button>
+    <button class="tool" type="button" id="print"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/></svg><span>Enregistrer en PDF</span></button>
+  </div>
+  <div class="contact"><p>Une question pendant la cicatrisation ?</p>
+    <a class="cta" id="ctaMain" href="https://www.instagram.com/vr.body.art/" rel="noopener">Écrire à VR Body Art</a>
+  </div>
+  <span class="upd">Fiches mises à jour le 25 novembre 2026</span>
+</main>
+
+<footer>VR Body Art · 12 rue Duguey du Fay, 60600 Clermont · <a href="https://www.instagram.com/vr.body.art/">@vr.body.art</a> · <a href="https://www.instagram.com/amei_piercing/">@amei_piercing</a></footer>
+
+<script>
+{
+const ids=['tatouage','piercing','buccal'];
+const show=()=>{
+  const h=location.hash.slice(1);const cur=ids.includes(h)?h:'tatouage';
+  for(const id of ids)document.getElementById(id).hidden=id!==cur;
+  document.querySelectorAll('.tab').forEach(a=>{if(a.dataset.t===cur)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  const s=document.getElementById(cur);const [m,sub]=s.dataset.medal.split('|');
+  document.getElementById('medalTxt').textContent=m;document.getElementById('medalSub').textContent=sub;
+  document.getElementById('sub').textContent=s.dataset.sub;
+  document.title=`Soins ${cur==='tatouage'?'tatouage':cur==='buccal'?'piercing buccal':'piercing'} · VR Body Art`;
+};
+const cta=document.getElementById('ctaMain');
+const setCta=()=>{const p=location.hash.slice(1)==='piercing'||location.hash.slice(1)==='buccal';cta.href=p?'https://www.instagram.com/amei_piercing/':'https://www.instagram.com/vr.body.art/';cta.textContent=p?'Écrire à Ameï Piercing':'Écrire à VR Body Art'};
+document.getElementById('copy').onclick=async e=>{const sp=e.currentTarget.querySelector('span');try{await navigator.clipboard.writeText(location.href);sp.textContent='Lien copié ✓'}catch{sp.textContent=location.href}setTimeout(()=>sp.textContent='Copier le lien de cette fiche',2500)};
+document.getElementById('print').onclick=()=>window.print();
+addEventListener('hashchange',setCta);setCta();
+addEventListener('hashchange',()=>{show();scrollTo({top:0,behavior:'smooth'})});
+show();
+}
+</script>
+</body>
+</html>
