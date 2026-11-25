@@ -33,7 +33,6 @@ fieldset{border:1.5px solid var(--line);background:var(--card);border-radius:14p
 legend{font:600 20px Oswald,Impact,sans-serif;padding:0 6px}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 label{display:grid;gap:4px;font-weight:500;font-size:15px}
-[hidden]{display:none!important}
 .hint{font-weight:400;color:var(--mut);font-size:13px}
 input,select,textarea{font:16px "Work Sans",sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px;width:100%}
 textarea{min-height:70px;resize:vertical}
@@ -70,10 +69,6 @@ textarea{min-height:70px;resize:vertical}
 .zones input{width:auto;min-height:0;accent-color:var(--red)}
 .zones label:has(input:checked){border-color:var(--ink);background:var(--goldsoft)}
 .zg{width:100%;font-size:13px;color:var(--mut);margin-top:6px}
-.zsel{margin-top:8px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chips:empty{display:none}
-.chip{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--ink);background:var(--goldsoft);border-radius:999px;padding:6px 8px 6px 14px;font-weight:500;min-height:40px}
-.chip button{border:0;background:transparent;color:var(--ink);font-size:20px;line-height:1;width:30px;height:30px;border-radius:50%;cursor:pointer}.chip button:hover{background:var(--line)}
 .list{display:grid;gap:10px}
 .item{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between}
 .item p{margin:0}.meta{color:var(--mut);font-size:14px}
@@ -108,7 +103,7 @@ textarea{min-height:70px;resize:vertical}
         <label>Réalisé par<input id="praticien" required></label>
       </div>
       <label id="descWrap"><span id="descLbl">Tatouage : motif, emplacement, taille</span><textarea id="desc" required></textarea></label>
-      <div id="zonesWrap" hidden><label for="zsel" style="display:block">Emplacement(s) du piercing <span class="hint">choisis dans la liste (tu peux en ajouter plusieurs)</span></label><select id="zsel" class="zsel"></select><div class="chips" id="zones" aria-live="polite"></div></div>
+      <div id="zonesWrap" hidden><span style="font-weight:500">Emplacement(s) du piercing <span class="hint">coche tout ce qui est fait aujourd'hui</span></span><div class="zones" id="zones"></div></div>
     </fieldset>
 
     <fieldset>
@@ -206,7 +201,7 @@ textarea{min-height:70px;resize:vertical}
 <script src="pdf-lib.min.js"></script>
 <script>
 {
-const VERSION='2026-11-25f';
+const VERSION='2026-11-25g';
 const STUDIO='VR Body Art – 12 rue Duguey du Fay, 60600 Clermont';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -225,18 +220,11 @@ const presta=()=>document.querySelector('input[name=presta]:checked').value;
 
 const ZGROUPS=[['Oreille',['Lobe','Hélix','Tragus','Conch','Daith','Rook','Industriel']],['Visage',['Narine','Septum','Arcade','Bridge']],['Bouche',['Langue','Labret / lèvre','Smiley','Medusa']],['Corps',['Nombril','Téton','Surface / dermal','Autre']]];
 const ORAL=['Langue','Labret / lèvre','Smiley','Medusa'];
-let ZSEL=[];
-const drawZones=()=>{
-  $('zsel').innerHTML=`<option value="">${ZSEL.length?'+ Ajouter un autre emplacement…':'Choisir l\'emplacement…'}</option>`+ZGROUPS.map(([g,l])=>`<optgroup label="${esc(g)}">`+l.filter(z=>!ZSEL.includes(z)).map(z=>`<option value="${esc(z)}">${esc(z)}</option>`).join('')+'</optgroup>').join('');
-  $('zones').innerHTML=ZSEL.map(z=>`<span class="chip">${esc(z)}<button type="button" data-z="${esc(z)}" aria-label="Retirer ${esc(z)}">×</button></span>`).join('');
-};
-$('zsel').onchange=e=>{const z=e.target.value;if(z&&!ZSEL.includes(z))ZSEL.push(z);drawZones()};
-$('zones').onclick=e=>{const b=e.target.closest('button[data-z]');if(!b)return;ZSEL=ZSEL.filter(z=>z!==b.dataset.z);drawZones()};
-drawZones();
-const zonesSel=()=>[...ZSEL];
+$('zones').innerHTML=ZGROUPS.map(([g,l])=>`<span class="zg">${g}</span>`+l.map(z=>`<label><input type="checkbox" class="zn" value="${esc(z)}"> ${esc(z)}</label>`).join('')).join('');
+const zonesSel=()=>[...document.querySelectorAll('.zn:checked')].map(i=>i.value);
 const fichesOf=d=>d.prestation==='tatouage'?['tatouage']:[...new Set((d.zones||[]).map(z=>ORAL.includes(z)?'buccal':'piercing'))];
 const QUESTIONS=[
- ['allergies',"Allergies connues (latex, nickel ou métaux, pigments, antiseptiques, pansements, crèmes, médicaments…)",'all'],
+ ['allergies',"Allergies connues",'all'],
  ['anticoag',"Traitement anticoagulant, ou aspirine / anti-inflammatoires pris dans les 48 dernières heures",'all'],
  ['coag',"Hémophilie ou trouble de la coagulation, saignements fréquents",'all'],
  ['diabete',"Diabète",'all'],
@@ -277,10 +265,10 @@ const INFO={
    "Le piercing perce la peau ou le cartilage : il peut laisser une marque ou une cicatrice, même après retrait du bijou.",
    "L'acte peut être douloureux.",
    "Risque infectieux : toute effraction de la peau peut provoquer une infection si l'hygiène n'est pas respectée, pendant l'acte comme pendant la cicatrisation. Le studio utilise du matériel stérile à usage unique.",
-   "Risque allergique : certains métaux (nickel notamment), le latex ou les antiseptiques peuvent provoquer une réaction allergique.",
-   "Le bijou peut être rejeté ou migrer, et une cicatrice épaisse (chéloïde) peut se former.",
+   "Risque allergique : une réaction allergique reste possible. Les bijoux posés sont uniquement en titane.",
+   "Le bijou peut être rejeté, et une petite boule ou excroissance peut se former.",
    "Certains états de santé ou traitements peuvent contre-indiquer ou faire reporter le piercing. En cas de doute, demandez l'avis de votre médecin.",
-   "La cicatrisation va de quelques semaines à plusieurs mois selon l'emplacement (cartilage et nombril : souvent 6 à 12 mois)."]],
+   "La cicatrisation va de quelques semaines à plusieurs mois selon l'emplacement."]],
   ['Précautions après l’acte',[
    "Suivre les consignes de soin remises par la perceuse.",
    "Se laver les mains avant de toucher le piercing ; nettoyer avec du sérum physiologique et sécher en tamponnant.",
