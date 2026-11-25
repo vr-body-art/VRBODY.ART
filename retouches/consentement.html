@@ -206,7 +206,7 @@ textarea{min-height:70px;resize:vertical}
 <script src="pdf-lib.min.js"></script>
 <script>
 {
-const VERSION='2026-11-25f';
+const VERSION='2026-11-25g';
 const STUDIO='VR Body Art – 12 rue Duguey du Fay, 60600 Clermont';
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -236,7 +236,7 @@ drawZones();
 const zonesSel=()=>[...ZSEL];
 const fichesOf=d=>d.prestation==='tatouage'?['tatouage']:[...new Set((d.zones||[]).map(z=>ORAL.includes(z)?'buccal':'piercing'))];
 const QUESTIONS=[
- ['allergies',"Allergies connues (latex, nickel ou métaux, pigments, antiseptiques, pansements, crèmes, médicaments…)",'all'],
+ ['allergies',"Allergies connues",'all'],
  ['anticoag',"Traitement anticoagulant, ou aspirine / anti-inflammatoires pris dans les 48 dernières heures",'all'],
  ['coag',"Hémophilie ou trouble de la coagulation, saignements fréquents",'all'],
  ['diabete',"Diabète",'all'],
@@ -277,10 +277,10 @@ const INFO={
    "Le piercing perce la peau ou le cartilage : il peut laisser une marque ou une cicatrice, même après retrait du bijou.",
    "L'acte peut être douloureux.",
    "Risque infectieux : toute effraction de la peau peut provoquer une infection si l'hygiène n'est pas respectée, pendant l'acte comme pendant la cicatrisation. Le studio utilise du matériel stérile à usage unique.",
-   "Risque allergique : certains métaux (nickel notamment), le latex ou les antiseptiques peuvent provoquer une réaction allergique.",
-   "Le bijou peut être rejeté ou migrer, et une cicatrice épaisse (chéloïde) peut se former.",
+   "Risque allergique : une réaction allergique reste possible. Les bijoux posés sont uniquement en titane.",
+   "Le bijou peut être rejeté, et une petite boule ou excroissance peut se former.",
    "Certains états de santé ou traitements peuvent contre-indiquer ou faire reporter le piercing. En cas de doute, demandez l'avis de votre médecin.",
-   "La cicatrisation va de quelques semaines à plusieurs mois selon l'emplacement (cartilage et nombril : souvent 6 à 12 mois)."]],
+   "La cicatrisation va de quelques semaines à plusieurs mois selon l'emplacement."]],
   ['Précautions après l’acte',[
    "Suivre les consignes de soin remises par la perceuse.",
    "Se laver les mains avant de toucher le piercing ; nettoyer avec du sérum physiologique et sécher en tamponnant.",
