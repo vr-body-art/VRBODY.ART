@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consentements VR Body Art</title>
+<meta name="theme-color" content="#151413">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+/* VOICE: formulaire de studio, clair et sérieux, lisible par le client sur une tablette
+   IDEA: la fiche papier qu'on fait remplir au comptoir, en une seule colonne calme
+   PICTURE: le formulaire lui-même, avec la zone de signature comme pièce maîtresse
+   COLOUR and TYPE: encre noire, rouge flash, jaune pour l'action; Oswald + Work Sans
+   LAYOUT: bandeau noir, onglets Nouveau / Registre, une colonne de 720px */
+:root{color-scheme:light dark;--bg:light-dark(#faf8f5,#121110);--ink:light-dark(#151413,#f3efe9);--mut:light-dark(#6b655e,#a59d93);--line:light-dark(#e4ded6,#2c2926);--card:light-dark(#fff,#1b1917);--red:light-dark(#c8102e,#ff5a68);--gold:#f2b705;--goldsoft:light-dark(#fdf0c4,#3a2f0a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Work Sans",system-ui,sans-serif;overflow-x:clip}
+h1,h2{font-family:Oswald,Impact,sans-serif;font-weight:600;line-height:1.1;margin:0}
+header{background:#151413;color:#f6f1ea;padding:clamp(20px,4vw,40px) max(5vw,16px);background-image:radial-gradient(#f2b70522 1.5px,transparent 1.6px),radial-gradient(circle at 85% 30%,#4a151c 0,transparent 60%);background-size:22px 22px,100% 100%}
+.hw{max-width:760px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:end;justify-content:space-between}
+.brand{font-size:14px;color:#cfc6ba;margin-bottom:6px}
+header h1{font-size:clamp(30px,6vw,46px)}
+header a{color:#f2b705;font-weight:600}
+main{max-width:760px;margin:0 auto;padding:22px max(4vw,14px) 60px}
+.tabs{display:flex;gap:6px;margin-bottom:18px}
+.tab{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 16px;font:500 15px "Work Sans",sans-serif;min-height:44px;cursor:pointer}
+.tab[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+fieldset{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:16px 18px 18px;margin:0 0 14px;display:grid;gap:12px}
+legend{font:600 20px Oswald,Impact,sans-serif;padding:0 6px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:grid;gap:4px;font-weight:500;font-size:15px}
+[hidden]{display:none!important}
+.hint{font-weight:400;color:var(--mut);font-size:13px}
+input,select,textarea{font:16px "Work Sans",sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px;width:100%}
+textarea{min-height:70px;resize:vertical}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg label{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer;font-weight:500}
+.seg input{width:auto;min-height:0;accent-color:var(--red)}
+.seg label:has(input:checked){border-color:var(--ink);background:var(--goldsoft)}
+.q{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q .det{grid-column:1/-1}
+.q .det[hidden]{display:none}
+.q .seg label{padding:6px 12px;min-height:40px}
+.chk{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;font-weight:400;padding:6px 0}
+.chk input{width:22px;height:22px;min-height:0;margin-top:2px;accent-color:var(--red)}
+.info{background:var(--bg);border-radius:10px;padding:12px 14px;font-size:14.5px;max-height:280px;overflow:auto;border:1px solid var(--line)}
+.info h3{font-size:15px;margin:10px 0 4px}.info h3:first-child{margin-top:0}
+.info ul{margin:0;padding-left:20px}
+.sig{display:grid;gap:6px}
+.pad{position:relative;height:190px;border:2px dashed var(--line);border-radius:12px;background:#fff;touch-action:none}
+.pad canvas{position:absolute;inset:0;width:100%;height:100%}
+.pad span{position:absolute;left:14px;bottom:10px;color:#9a948c;font-size:13px;pointer-events:none}
+.btn{border:0;border-radius:10px;padding:12px 20px;min-height:46px;font:600 16px "Work Sans",sans-serif;cursor:pointer;background:var(--red);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{padding:7px 12px;min-height:38px;font-size:14px}
+.btn[disabled]{opacity:.55;cursor:wait}
+.err{color:var(--red);font-weight:500}
+.ok{border:2px solid var(--gold);background:var(--goldsoft);border-radius:14px;padding:18px;display:grid;gap:10px}
+.ok h2{font-size:28px}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.minor{border-color:var(--gold)}
+.zones{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.zones label{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;min-height:44px;cursor:pointer;font-weight:500}
+.zones input{width:auto;min-height:0;accent-color:var(--red)}
+.zones label:has(input:checked){border-color:var(--ink);background:var(--goldsoft)}
+.zg{width:100%;font-size:13px;color:var(--mut);margin-top:6px}
+.zsel{margin-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chips:empty{display:none}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--ink);background:var(--goldsoft);border-radius:999px;padding:6px 8px 6px 14px;font-weight:500;min-height:40px}
+.chip button{border:0;background:transparent;color:var(--ink);font-size:20px;line-height:1;width:30px;height:30px;border-radius:50%;cursor:pointer}.chip button:hover{background:var(--line)}
+.list{display:grid;gap:10px}
+.item{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between}
+.item p{margin:0}.meta{color:var(--mut);font-size:14px}
+.empty{border:2px dashed var(--line);border-radius:14px;padding:24px;text-align:center;color:var(--mut)}
+.gate{text-align:center;padding:40px 0}
+@media(max-width:600px){.row{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="hw">
+  <div><div class="brand">VR Body Art · 12 rue Duguey du Fay, 60600 Clermont</div><h1>Attestation de consentement</h1></div>
+  <a href="./" id="backLink">← Suivi des retouches</a>
+</div></header>
+
+<main>
+  <div id="remoteMsg" class="gate" hidden></div>
+  <div id="gate" class="gate" hidden><p>Connecte-toi d'abord dans l'appli.</p><a class="btn" href="./">Se connecter</a></div>
+
+  <div id="appc" hidden>
+  <div class="tabs"><button class="tab" type="button" id="tNew" aria-pressed="true">Nouveau consentement</button><button class="tab" type="button" id="tInv" aria-pressed="false">Envoyer un lien</button><button class="tab" type="button" id="tReg" aria-pressed="false">Registre signé</button></div>
+
+  <section id="vNew">
+  <form id="f" novalidate>
+    <fieldset>
+      <legend>Prestation</legend>
+      <div class="seg" role="radiogroup" aria-label="Prestation">
+        <label><input type="radio" name="presta" value="tatouage" checked> Tatouage</label>
+        <label><input type="radio" name="presta" value="piercing"> Piercing</label>
+      </div>
+      <div class="row">
+        <label>Date de la séance<input id="dSeance" type="date" required></label>
+        <label>Réalisé par<input id="praticien" required></label>
+      </div>
+      <label id="descWrap"><span id="descLbl">Tatouage : motif, emplacement, taille</span><textarea id="desc" required></textarea></label>
+      <div id="zonesWrap" hidden><label for="zsel" style="display:block">Emplacement(s) du piercing <span class="hint">choisis dans la liste (tu peux en ajouter plusieurs)</span></label><select id="zsel" class="zsel"></select><div class="chips" id="zones" aria-live="polite"></div></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Client</legend>
+      <div class="row">
+        <label>Nom<input id="nom" autocomplete="off" required></label>
+        <label>Prénom<input id="prenom" autocomplete="off" required></label>
+      </div>
+      <div class="row">
+        <label>Date de naissance<input id="naiss" type="date" required></label>
+        <label>Téléphone<input id="tel" type="tel" autocomplete="off"></label>
+      </div>
+      <div class="row">
+        <label>E-mail <span class="hint">la copie et la fiche de soins y sont envoyées</span><input id="email" type="email" autocomplete="off" required></label>
+        <label>Adresse<input id="adresse" autocomplete="off"></label>
+      </div>
+      <p class="hint" id="remoteId" hidden>Ta pièce d'identité sera vérifiée au studio le jour de la séance : pense à l'apporter.</p>
+      <div class="row" id="idRow">
+        <label>Pièce d'identité vérifiée <span class="hint">par le studio</span>
+          <select id="pType" required><option value="">Choisir</option><option>Carte d'identité</option><option>Passeport</option><option>Permis de conduire</option><option>Titre de séjour</option></select></label>
+        <label>4 derniers caractères du n° <span class="hint">pas le numéro complet</span><input id="pNum" maxlength="4" autocomplete="off" required></label>
+      </div>
+      <p class="hint" id="ageInfo"></p>
+    </fieldset>
+
+    <fieldset id="minor" class="minor" hidden>
+      <legend>Mineur : autorisation parentale</legend>
+      <p class="hint">Le client a moins de 18 ans : la loi impose l'accord écrit d'un titulaire de l'autorité parentale ou du tuteur, présent au studio. Cette autorisation est conservée au moins 3 ans.</p>
+      <div class="row">
+        <label>Nom et prénom du représentant<input id="rNom" autocomplete="off"></label>
+        <label>Qualité<select id="rQual"><option value="">Choisir</option><option>Mère</option><option>Père</option><option>Tuteur / tutrice</option></select></label>
+      </div>
+      <div class="row">
+        <label>Téléphone<input id="rTel" type="tel" autocomplete="off"></label>
+        <label>Pièce vérifiée (type + 4 derniers caractères)<input id="rPiece" autocomplete="off" placeholder="Carte d'identité 7K2B"></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Questionnaire de santé</legend>
+      <p class="hint">Réponds sincèrement : certaines situations demandent de reporter la séance ou l'avis d'un médecin. Ces informations restent confidentielles.</p>
+      <div id="qs"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Information et engagements</legend>
+      <div class="info" id="infoTxt"></div>
+      <div id="decl"></div>
+      <label class="chk"><input type="checkbox" id="photos"><span><b>Facultatif :</b> j'autorise <span class="pwho">VR Body Art</span> à prendre et publier des photos et vidéos de mon <span class="ptype">tatouage</span>, sur lesquelles je peux apparaître, sur <span class="pwhere">son site et ses réseaux sociaux</span>.</span></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Signatures</legend>
+      <div class="sig"><span id="sigLbl">Signature du client, précédée de la mention « lu et approuvé » dans le champ ci-dessous</span>
+        <input id="lu" placeholder="Écrire : lu et approuvé" autocomplete="off">
+        <div class="pad"><canvas id="c1"></canvas><span>Signer ici avec le doigt</span></div>
+        <div><button class="btn ghost small" type="button" data-clear="c1">Effacer</button></div>
+      </div>
+      <div class="sig" id="sig2" hidden><span>Signature du représentant légal (« lu et approuvé, bon pour autorisation »)</span>
+        <input id="lu2" placeholder="Écrire : lu et approuvé, bon pour autorisation" autocomplete="off">
+        <div class="pad"><canvas id="c2"></canvas><span>Signature du parent ou tuteur</span></div>
+        <div><button class="btn ghost small" type="button" data-clear="c2">Effacer</button></div>
+      </div>
+      <label class="chk" id="addRetWrap"><input type="checkbox" id="addRet" checked><span>Ajouter ce client au suivi des retouches</span></label>
+      <p class="err" id="ferr" role="alert"></p>
+      <button class="btn" type="submit" id="go">Signer et archiver</button>
+    </fieldset>
+  </form>
+  <div id="done" class="ok" hidden></div>
+  </section>
+
+  <section id="vInv" hidden>
+    <fieldset>
+      <legend>Envoyer un lien de consentement</legend>
+      <p class="hint">Le client remplit et signe sur son téléphone. Le lien ne sert qu'une fois et expire au bout de 7 jours. Pour un mineur, fais signer au studio avec le parent.</p>
+      <div class="seg" role="radiogroup" aria-label="Prestation"><label><input type="radio" name="ipresta" value="tatouage" checked> Tatouage</label><label><input type="radio" name="ipresta" value="piercing"> Piercing</label></div>
+      <div class="row"><label>Prénom du client <span class="hint">pour t'y retrouver</span><input id="iPrenom" autocomplete="off"></label><label>Date de la séance<input id="iDate" type="date"></label></div>
+      <div class="row"><label>Réalisé par<input id="iPrat"></label><label>Prestation prévue<input id="iDesc" placeholder="Rose fineline avant-bras / Hélix…"></label></div>
+      <p class="err" id="ierr" role="alert"></p>
+      <div><button class="btn" type="button" id="iGo">Créer le lien</button></div>
+      <div id="iOut" class="ok" hidden></div>
+    </fieldset>
+    <h2 style="font-size:22px;margin:18px 0 10px">Liens en attente</h2>
+    <div class="list" id="iList"></div>
+  </section>
+
+  <section id="vReg" hidden>
+    <input id="q" type="search" placeholder="Rechercher un client" aria-label="Rechercher un client" style="margin-bottom:12px">
+    <div class="list" id="list"></div>
+  </section>
+  </div>
+</main>
+
+<script src="supabase.js"></script>
+<script src="pdf-lib.min.js"></script>
+<script>
+{
+const VERSION='2026-11-25f';
+const STUDIO='VR Body Art – 12 rue Duguey du Fay, 60600 Clermont';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const parse=s=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(s||''))return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const add=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const addMonth=d=>{const x=new Date(d.getFullYear(),d.getMonth()+1,1);x.setDate(Math.min(d.getDate(),new Date(x.getFullYear(),x.getMonth()+1,0).getDate()));return x};
+const frl=d=>d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+const T=new Date();const today=new Date(T.getFullYear(),T.getMonth(),T.getDate());
+const sb=window.supabase.createClient('https://djuvwmxuplkzplahjcdm.supabase.co','sb_publishable_RY-y4vH1IXXm5Cto2TQe6A_SWdEJ43O');
+let UID=null,EMAIL='';
+const TOKEN=new URLSearchParams(location.search).get('t');const REMOTE=!!TOKEN;
+const FN='https://djuvwmxuplkzplahjcdm.supabase.co/functions/v1/consent-public';
+const KEY='sb_publishable_RY-y4vH1IXXm5Cto2TQe6A_SWdEJ43O';
+const presta=()=>document.querySelector('input[name=presta]:checked').value;
+
+const ZGROUPS=[['Oreille',['Lobe','Hélix','Tragus','Conch','Daith','Rook','Industriel']],['Visage',['Narine','Septum','Arcade','Bridge']],['Bouche',['Langue','Labret / lèvre','Smiley','Medusa']],['Corps',['Nombril','Téton','Surface / dermal','Autre']]];
+const ORAL=['Langue','Labret / lèvre','Smiley','Medusa'];
+let ZSEL=[];
+const drawZones=()=>{
+  $('zsel').innerHTML=`<option value="">${ZSEL.length?'+ Ajouter un autre emplacement…':'Choisir l\'emplacement…'}</option>`+ZGROUPS.map(([g,l])=>`<optgroup label="${esc(g)}">`+l.filter(z=>!ZSEL.includes(z)).map(z=>`<option value="${esc(z)}">${esc(z)}</option>`).join('')+'</optgroup>').join('');
+  $('zones').innerHTML=ZSEL.map(z=>`<span class="chip">${esc(z)}<button type="button" data-z="${esc(z)}" aria-label="Retirer ${esc(z)}">×</button></span>`).join('');
+};
+$('zsel').onchange=e=>{const z=e.target.value;if(z&&!ZSEL.includes(z))ZSEL.push(z);drawZones()};
+$('zones').onclick=e=>{const b=e.target.closest('button[data-z]');if(!b)return;ZSEL=ZSEL.filter(z=>z!==b.dataset.z);drawZones()};
+drawZones();
+const zonesSel=()=>[...ZSEL];
+const fichesOf=d=>d.prestation==='tatouage'?['tatouage']:[...new Set((d.zones||[]).map(z=>ORAL.includes(z)?'buccal':'piercing'))];
+const QUESTIONS=[
+ ['allergies',"Allergies connues (latex, nickel ou métaux, pigments, antiseptiques, pansements, crèmes, médicaments…)",'all'],
+ ['anticoag',"Traitement anticoagulant, ou aspirine / anti-inflammatoires pris dans les 48 dernières heures",'all'],
+ ['coag',"Hémophilie ou trouble de la coagulation, saignements fréquents",'all'],
+ ['diabete',"Diabète",'all'],
+ ['coeur',"Maladie cardiaque, épilepsie, ou malaise déjà survenu lors d'une prise de sang ou d'un soin",'all'],
+ ['immuno',"Immunodépression, traitement immunosuppresseur, corticoïdes au long cours ou chimiothérapie",'all'],
+ ['peau',"Problème de peau sur la zone (eczéma, psoriasis, grain de beauté, cicatrice récente, coup de soleil)",'all'],
+ ['cheloide',"Tendance aux cicatrices chéloïdes (cicatrices épaisses et en relief)",'all'],
+ ['isotret',"Traitement contre l'acné à base d'isotrétinoïne (type Roaccutane) dans les 12 derniers mois",'all'],
+ ['grossesse',"Grossesse ou allaitement en cours",'all'],
+ ['infect',"Maladie infectieuse transmissible par le sang (hépatite, VIH…) — information confidentielle",'all'],
+ ['subst',"Alcool, drogue ou médicament qui altère la vigilance pris dans les 24 dernières heures",'all'],
+ ['autre',"Autre problème de santé ou traitement en cours à signaler",'all']
+];
+$('qs').innerHTML=QUESTIONS.map(([k,l])=>`<div class="q"><span>${esc(l)}</span>
+  <div class="seg" role="radiogroup" aria-label="${esc(l)}"><label><input type="radio" name="q_${k}" value="non"> Non</label><label><input type="radio" name="q_${k}" value="oui"> Oui</label></div>
+  <input class="det" id="d_${k}" placeholder="Précisez" hidden></div>`).join('');
+$('qs').addEventListener('change',e=>{const m=e.target.name&&e.target.name.match(/^q_(.+)$/);if(m)$('d_'+m[1]).hidden=e.target.value!=='oui'});
+
+const INFO={
+ tatouage:[
+  ['Quels sont les risques ?',[
+   "Le tatouage est une modification permanente du corps. Le retirer (laser) est long, coûteux, souvent douloureux et pas toujours complet.",
+   "L'acte peut être douloureux.",
+   "Risque infectieux : toute effraction de la peau peut provoquer une infection si l'hygiène n'est pas respectée, pendant la séance comme pendant la cicatrisation. Le studio utilise du matériel stérile à usage unique.",
+   "Risque allergique : les pigments, le latex, les antiseptiques ou les produits de soin peuvent provoquer une réaction allergique, parfois longtemps après la séance.",
+   "Certains états de santé ou traitements (anticoagulants, aspirine, immunosuppresseurs, isotrétinoïne, grossesse, maladie de peau sur la zone…) peuvent contre-indiquer ou faire reporter le tatouage. En cas de doute, demandez l'avis de votre médecin.",
+   "La cicatrisation prend en général 2 à 4 semaines en surface. Le rendu final dépend de la peau et du respect des soins."]],
+  ['Précautions après la séance',[
+   "Suivre les consignes de soin remises par le tatoueur.",
+   "Se laver les mains avant de toucher le tatouage ; nettoyer à l'eau et au savon doux, sécher en tamponnant.",
+   "Ne pas gratter ni arracher les croûtes.",
+   "Pas de bain, piscine, mer, sauna ou hammam jusqu'à cicatrisation complète.",
+   "Pas de soleil ni d'UV pendant la cicatrisation, puis protéger le tatouage avec un écran total.",
+   "Consulter un médecin en cas de rougeur qui s'étend, chaleur, gonflement, écoulement de pus ou fièvre."]]
+ ],
+ piercing:[
+  ['Quels sont les risques ?',[
+   "Le piercing perce la peau ou le cartilage : il peut laisser une marque ou une cicatrice, même après retrait du bijou.",
+   "L'acte peut être douloureux.",
+   "Risque infectieux : toute effraction de la peau peut provoquer une infection si l'hygiène n'est pas respectée, pendant l'acte comme pendant la cicatrisation. Le studio utilise du matériel stérile à usage unique.",
+   "Risque allergique : certains métaux (nickel notamment), le latex ou les antiseptiques peuvent provoquer une réaction allergique.",
+   "Le bijou peut être rejeté ou migrer, et une cicatrice épaisse (chéloïde) peut se former.",
+   "Certains états de santé ou traitements peuvent contre-indiquer ou faire reporter le piercing. En cas de doute, demandez l'avis de votre médecin.",
+   "La cicatrisation va de quelques semaines à plusieurs mois selon l'emplacement (cartilage et nombril : souvent 6 à 12 mois)."]],
+  ['Précautions après l’acte',[
+   "Suivre les consignes de soin remises par la perceuse.",
+   "Se laver les mains avant de toucher le piercing ; nettoyer avec du sérum physiologique et sécher en tamponnant.",
+   "Ne pas tourner ni retirer le bijou, ne pas changer de bijou avant la fin de la cicatrisation.",
+   "Pas de bain, piscine, mer, sauna ou hammam jusqu'à cicatrisation complète.",
+   "Éviter les frottements (vêtements, téléphone, oreiller) sur la zone.",
+   "Consulter un médecin en cas de rougeur qui s'étend, chaleur, gonflement, écoulement de pus ou fièvre."]]
+ ]
+};
+
+function declarations(){
+  const p=presta(),d=parse($('dSeance').value)||today;
+  const L=[
+   `J'ai reçu, oralement et par écrit (fiche ci-dessus), l'information sur les risques du ${p}, ses contre-indications et les précautions à respecter après l'acte, et j'ai pu poser mes questions.`,
+   "J'ai été informé(e) du caractère douloureux de l'acte ainsi que des risques possibles.",
+   "J'ai répondu sincèrement au questionnaire de santé. Je m'engage à signaler tout changement avant l'acte. Je reconnais qu'une fausse déclaration ou une omission engage ma seule responsabilité.",
+   "Je ne suis pas sous l'emprise de l'alcool, de drogues ou de médicaments altérant ma vigilance.",
+   p==='tatouage'?"J'ai validé le dessin, son emplacement, sa taille et, le cas échéant, l'orthographe des textes.":"J'ai validé l'emplacement du ou des piercings.",
+   p==='tatouage'?"Je sais que le tatouage est permanent et que son rendu final dépend de ma peau et du respect des soins.":"Je sais que le piercing peut laisser une marque définitive, et que sa cicatrisation dépend de ma peau et du respect des soins.",
+   "Je m'engage à suivre les consignes de soin remises par le studio."
+  ];
+  if(p==='piercing')L.push("Ameï Piercing ne peut être tenu responsable des complications pouvant survenir si les soins après piercing ne sont pas respectés, ou en cas de réaction individuelle imprévisible (allergie, rejet, cicatrisation difficile).");
+  if(p==='tatouage'){const o=addMonth(d),e=add(o,14);
+   L.push(`Retouche : la retouche est comprise dans le prix à condition de contacter VR Body Art 1 mois après la séance, dans un délai de 2 semaines, soit entre le ${frl(o)} et le ${frl(e)}. En dehors de ce délai, la retouche n'est plus comprise et pourra être facturée.`)}
+  L.push("J'accepte que mes données (identité, coordonnées, réponses de santé, signature) soient conservées de façon confidentielle par VR Body Art, uniquement pour le suivi de ma prestation et la preuve de mon consentement.");
+  return L;
+}
+function renderTexts(){
+  const p=presta();
+  $('infoTxt').innerHTML=INFO[p].map(([h,l])=>`<h3>${esc(h)}</h3><ul>${l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`).join('');
+  const prev=[...document.querySelectorAll('#decl input')].map(i=>i.checked);
+  $('decl').innerHTML=declarations().map((t,i)=>`<label class="chk"><input type="checkbox" class="dcl" ${prev[i]?'checked':''}><span>${esc(t)}</span></label>`).join('');
+  $('descWrap').hidden=p!=='tatouage';$('zonesWrap').hidden=p!=='piercing';
+  document.querySelectorAll('.ptype').forEach(s=>s.textContent=p);
+  document.querySelectorAll('.pwho').forEach(s=>s.textContent=p==='piercing'?'VR Body Art et Ameï Piercing':'VR Body Art');
+  document.querySelectorAll('.pwhere').forEach(s=>s.textContent=p==='piercing'?'leurs sites et réseaux sociaux':'son site et ses réseaux sociaux');
+  $('addRetWrap').hidden=p!=='tatouage'||REMOTE;
+  if(!$('praticien').dataset.touched)$('praticien').value=p==='tatouage'?'Valentin Raimbaud':'Ameï Piercing';
+}
+function age(){const b=parse($('naiss').value);if(!b)return null;let a=today.getFullYear()-b.getFullYear();if(today<new Date(today.getFullYear(),b.getMonth(),b.getDate()))a--;return a}
+function checkMinor(){const a=age();const m=a!==null&&a<18;$('minor').hidden=!m;$('sig2').hidden=!m;$('ageInfo').textContent=a===null?'':m?`${a} ans : mineur, autorisation parentale obligatoire.`:`${a} ans.`;return m}
+document.querySelectorAll('input[name=presta]').forEach(r=>r.onchange=renderTexts);
+$('dSeance').onchange=renderTexts;$('praticien').oninput=()=>$('praticien').dataset.touched=1;$('naiss').onchange=checkMinor;
+$('dSeance').value=iso(today);renderTexts();
+
+// signature pads : on garde les traits en mémoire et on les redessine, l'export se fait sur un canevas séparé
+const pads={};
+for(const id of ['c1','c2']){
+  const c=$(id),ctx=c.getContext('2d');let strokes=[],cur=null;
+  const paint=(g,k)=>{g.lineWidth=2.4*k;g.lineCap='round';g.lineJoin='round';g.strokeStyle='#111';for(const s of strokes){g.beginPath();s.forEach(([x,y],i)=>i?g.lineTo(x*k,y*k):g.moveTo(x*k,y*k));if(s.length===1)g.lineTo(s[0][0]*k+.1,s[0][1]*k);g.stroke()}};
+  const fit=()=>{const r=c.getBoundingClientRect();if(!r.width)return;c.width=Math.round(r.width*2);c.height=Math.round(r.height*2);ctx.clearRect(0,0,c.width,c.height);paint(ctx,2)};
+  const pt=e=>{const r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+  c.addEventListener('pointerdown',e=>{cur=[pt(e)];strokes.push(cur);c.setPointerCapture(e.pointerId);fit()});
+  c.addEventListener('pointermove',e=>{if(!cur)return;cur.push(pt(e));fit()});
+  const up=()=>cur=null;c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up);
+  new ResizeObserver(fit).observe(c);
+  pads[id]={get used(){return strokes.some(s=>s.length>1)},clear(){strokes=[];fit()},
+    png(){const r=c.getBoundingClientRect();const o=document.createElement('canvas');o.width=Math.round(r.width*3);o.height=Math.round(r.height*3);const g=o.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,o.width,o.height);paint(g,3);return o.toDataURL('image/png')}};
+}
+document.querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>pads[b.dataset.clear].clear());
+
+function collect(){
+  const err=[];const v=id=>$(id).value.trim();
+  const minor=checkMinor();
+  const zs=zonesSel();
+  if(presta()==='tatouage'&&!v('desc'))err.push('la description du tatouage');
+  if(presta()==='piercing'&&!zs.length)err.push('le ou les emplacements du piercing');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email')))err.push("l'e-mail");
+  if(!v('nom')||!v('prenom'))err.push('le nom et le prénom');
+  if(!parse(v('naiss')))err.push('la date de naissance');
+  if(!REMOTE&&(!v('pType')||v('pNum').length<2))err.push("la vérification de la pièce d'identité");
+  if(REMOTE&&minor)err.push('__mineur');
+  const sante={};
+  for(const [k,l] of QUESTIONS){const r=document.querySelector(`input[name=q_${k}]:checked`);if(!r){err.push('toutes les questions de santé');break}sante[k]={question:l,reponse:r.value,precision:r.value==='oui'?v('d_'+k):''}}
+  const dc=[...document.querySelectorAll('.dcl')];if(dc.some(i=>!i.checked))err.push('toutes les cases d\'engagement');
+  if(!/lu et approuv/i.test(v('lu')))err.push('la mention « lu et approuvé » du client');
+  if(!pads.c1.used)err.push('la signature du client');
+  let rep=null;
+  if(minor){if(!v('rNom')||!v('rQual')||!v('rPiece'))err.push('les informations du représentant légal');
+    if(!/lu et approuv/i.test(v('lu2')))err.push('la mention du représentant légal');
+    if(!pads.c2.used)err.push('la signature du représentant légal');
+    rep={nom:v('rNom'),qualite:v('rQual'),telephone:v('rTel'),piece:v('rPiece'),mention:v('lu2')}}
+  return{err,data:{prestation:presta(),praticien:v('praticien'),date_seance:v('dSeance'),client_nom:v('nom'),client_prenom:v('prenom'),date_naissance:v('naiss'),
+    adresse:v('adresse'),telephone:v('tel'),email:v('email'),piece_identite:REMOTE?'À vérifier au studio le jour de la séance':`${v('pType')} – ${v('pNum').toUpperCase()}`,mineur:minor,representant:rep,description:presta()==='piercing'?zs.join(', '):v('desc'),zones:presta()==='piercing'?zs:null,
+    sante,declarations:declarations(),photos_ok:$('photos').checked,mention:v('lu')}};
+}
+
+// PDF
+const clean=s=>String(s??'').normalize('NFC').replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/—/g,'-').replace(/[^\x0A\x20-\x7E\xA0-\xFF–…Œœ€]/g,'');
+async function buildPdf(id,d,signedAt){
+  const {PDFDocument,StandardFonts,rgb}=PDFLib;
+  const doc=await PDFDocument.create();
+  doc.setTitle(`Consentement ${d.prestation} - ${d.client_prenom} ${d.client_nom}`);doc.setAuthor('VR Body Art');doc.setCreationDate(signedAt);
+  const F=await doc.embedFont(StandardFonts.Helvetica),B=await doc.embedFont(StandardFonts.HelveticaBold);
+  const W=595,H=842,M=48,LW=W-2*M;let page,y;
+  const np=()=>{page=doc.addPage([W,H]);y=H-M};np();
+  const need=h=>{if(y-h<M+20)np()};
+  const wrap=(t,f,s,w)=>{const out=[];for(const para of clean(t).split('\n')){let line='';for(const word of para.split(' ')){const tr=line?line+' '+word:word;if(f.widthOfTextAtSize(tr,s)>w&&line){out.push(line);line=word}else line=tr}out.push(line)}return out};
+  const text=(t,{f=F,s=10,c=rgb(.08,.08,.08),indent=0,gap=3}={})=>{for(const l of wrap(t,f,s,LW-indent)){need(s+gap);page.drawText(l,{x:M+indent,y:y-s,size:s,font:f,color:c});y-=s+gap}};
+  const h=t=>{y-=8;need(30);text(t,{f:B,s:12.5});page.drawLine({start:{x:M,y:y+1},end:{x:W-M,y:y+1},thickness:.6,color:rgb(.75,.72,.68)});y-=6};
+  text('VR Body Art',{f:B,s:11});text('12 rue Duguey du Fay, 60600 Clermont',{s:9,c:rgb(.35,.35,.35)});y-=8;
+  text(`Attestation de consentement - ${d.prestation==='tatouage'?'Tatouage':'Piercing'}`,{f:B,s:18,gap:6});
+  text(`Document n° ${id} - version du texte ${VERSION}`,{s:8.5,c:rgb(.4,.4,.4)});
+  h('Prestation');
+  text(`Date de la séance : ${frl(parse(d.date_seance))}`);text(`Réalisée par : ${d.praticien}`);text(d.prestation==='piercing'?`Emplacement(s) : ${d.description}`:`Description : ${d.description}`);
+  h('Client');
+  text(`${d.client_prenom} ${d.client_nom}, né(e) le ${frl(parse(d.date_naissance))}`);
+  if(d.adresse)text(`Adresse : ${d.adresse}`);if(d.telephone)text(`Téléphone : ${d.telephone}`);if(d.email)text(`E-mail : ${d.email}`);
+  text(REMOTE?"Pièce d'identité : à présenter et faire vérifier au studio le jour de la séance.":`Pièce d'identité présentée et vérifiée par le studio : ${d.piece_identite}`);
+  if(d.mineur){h('Autorisation parentale (client mineur)');
+    text(`Je soussigné(e) ${d.representant.nom}, ${d.representant.qualite.toLowerCase()} et titulaire de l'autorité parentale (ou tuteur), présent(e) au studio, autorise ${d.client_prenom} ${d.client_nom} à réaliser la prestation décrite ci-dessus et déclare avoir reçu l'information prévue par la loi.`);
+    text(`Pièce d'identité du représentant vérifiée : ${d.representant.piece}${d.representant.telephone?' - Tél. '+d.representant.telephone:''}`)}
+  h('Questionnaire de santé');
+  for(const k in d.sante){const q=d.sante[k];text(`${q.reponse==='oui'?'OUI':'Non'} - ${q.question}${q.precision?' : '+q.precision:''}`,{s:9.5,f:q.reponse==='oui'?B:F})}
+  h('Information remise au client');
+  for(const [hh,l] of INFO[d.prestation]){text(hh,{f:B,s:10});for(const x of l)text('- '+x,{s:9.5,indent:8})}
+  h('Engagements du client');
+  for(const x of d.declarations)text('[X] '+x,{s:9.5});
+  text(`[${d.photos_ok?'X':' '}] Facultatif : autorise ${d.prestation==='piercing'?'VR Body Art et Ameï Piercing':'VR Body Art'} à prendre et publier des photos et vidéos de la prestation, sur lesquelles le client peut apparaître, sur ${d.prestation==='piercing'?'leurs sites et réseaux sociaux':'son site et ses réseaux sociaux'}.`,{s:9.5});
+  h('Signatures');
+  const stamp=signedAt.toLocaleString('fr-FR',{dateStyle:'long',timeStyle:'medium',timeZone:'Europe/Paris'});
+  const sig=async(label,mention,png)=>{const img=await doc.embedPng(png);const w=200,hh=w*img.height/img.width;need(hh+50);text(label,{f:B,s:10});text(`Mention : « ${mention} » - signé le ${stamp}`,{s:9});page.drawImage(img,{x:M,y:y-hh,width:w,height:hh});page.drawRectangle({x:M,y:y-hh,width:w,height:hh,borderColor:rgb(.8,.78,.74),borderWidth:.6});y-=hh+10};
+  await sig(`Client : ${d.client_prenom} ${d.client_nom}`,d.mention,pads.c1.png());
+  if(d.mineur)await sig(`Représentant légal : ${d.representant.nom} (${d.representant.qualite})`,d.representant.mention,pads.c2.png());
+  y-=6;text(REMOTE?`Signature électronique recueillie à distance, via un lien personnel à usage unique envoyé par VR Body Art au client. L'identité du signataire est vérifiée en personne au studio le jour de la séance. Horodatage, adresse IP et empreinte numérique (SHA-256) du présent document enregistrés dans le registre sécurisé du studio au moment de la signature.`:`Signature électronique recueillie en personne au studio, sur l'appareil de VR Body Art (session : ${EMAIL}). Horodatage et empreinte numérique (SHA-256) du présent document enregistrés dans le registre sécurisé du studio au moment de la signature.`,{s:8,c:rgb(.4,.4,.4)});
+  const pages=doc.getPages();pages.forEach((p,i)=>p.drawText(clean(`VR Body Art - consentement n° ${id} - page ${i+1}/${pages.length}`),{x:M,y:24,size:7.5,font:F,color:rgb(.5,.5,.5)}));
+  return await doc.save();
+}
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+const uuid=()=>crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
+let lastPdf=null;
+const FL={tatouage:'Fiche de soins tatouage',piercing:'Soins piercing',buccal:'Soins piercing buccal'};
+const soinsLinks=d=>fichesOf(d).map(f=>({f,url:'https://vrbodyart.fr/soins/#'+f,label:FL[f]}));
+const soinsUrl=d=>soinsLinks(d)[0].url;
+async function shareSoins(d,btn){const L=soinsLinks(d);const url=L[0].url;const msg=`Voici ${L.length>1?'tes fiches':'ta fiche'} de soins : `+L.map(x=>`${x.label} : ${x.url}`).join(' — ');
+  if(navigator.share){try{await navigator.share({text:msg});return}catch{}}
+  try{await navigator.clipboard.writeText(msg);btn.textContent='Lien copié ✓'}catch{window.open(url,'_blank','noopener')}}
+function shareOrDownload(bytes,name){
+  const file=new File([bytes],name,{type:'application/pdf'});
+  if(navigator.canShare&&navigator.canShare({files:[file]}))return navigator.share({files:[file],title:name}).catch(()=>{});
+  const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=name;document.body.appendChild(a);a.click();a.remove();
+}
+
+$('f').onsubmit=async e=>{
+  e.preventDefault();
+  const {err,data}=collect();
+  if(err.includes('__mineur')){$('ferr').textContent="Tu as moins de 18 ans : le consentement doit être signé au studio, avec un parent ou ton tuteur. Contacte VR Body Art.";return}
+  if(err.length){$('ferr').textContent='Il manque : '+[...new Set(err)].join(', ')+'.';return}
+  $('ferr').textContent='';$('go').disabled=true;$('go').textContent='Signature en cours…';
+  try{
+    const id=uuid(),signedAt=new Date();
+    const bytes=await buildPdf(id,data,signedAt);
+    if(REMOTE){
+      let bin='';const u8=new Uint8Array(bytes);for(let i=0;i<u8.length;i+=8192)bin+=String.fromCharCode(...u8.subarray(i,i+8192));
+      const {mention,...row}=data;
+      const r=await fetch(FN,{method:'POST',headers:{'Content-Type':'application/json',apikey:KEY,Authorization:'Bearer '+KEY},body:JSON.stringify({token:TOKEN,id,pdf:btoa(bin),data:{...row,fiches:fichesOf(data),texte_version:VERSION}})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(ERRS[j.error]||'erreur '+r.status);
+      const name=`consentement-${data.client_nom}-${data.client_prenom}-${data.date_seance}.pdf`.replace(/[^\w.-]+/g,'_');
+      lastPdf={bytes,name};$('f').hidden=true;$('done').hidden=false;
+      $('done').innerHTML=`<h2>C'est signé, merci !</h2><p>Ton consentement est bien enregistré chez VR Body Art${j.email?' et une copie vient de partir sur ta boîte mail':''}. Pense à venir avec ta pièce d'identité le jour de la séance.</p><div class="acts">${soinsLinks(data).map(x=>`<a class="btn" href="${esc(x.url)}" target="_blank" rel="noopener" style="text-decoration:none">${esc(x.label)}</a>`).join('')}<button class="btn ghost" type="button" id="share">Télécharger ma copie</button></div>`;
+      $('share').onclick=()=>shareOrDownload(lastPdf.bytes,lastPdf.name);scrollTo({top:0,behavior:'smooth'});return;
+    }
+    const sha=hex(await crypto.subtle.digest('SHA-256',bytes));
+    const path=`${UID}/${id}.pdf`;
+    const up=await sb.storage.from('consentements').upload(path,new Blob([bytes],{type:'application/pdf'}),{contentType:'application/pdf',upsert:false});
+    if(up.error)throw new Error('envoi du PDF : '+up.error.message);
+    const {mention,...row}=data;
+    const ins=await sb.from('consentements').insert({id,...row,fiches:fichesOf(data),representant:data.representant,texte_version:VERSION,pdf_path:path,pdf_sha256:sha,user_agent:navigator.userAgent.slice(0,300)});
+    if(ins.error)throw new Error('registre : '+ins.error.message);
+    if(data.prestation==='tatouage'&&$('addRet').checked){
+      await sb.from('retouches').insert({id:uuid(),nom:`${data.client_prenom} ${data.client_nom}`,contact:data.telephone||data.email||null,zone:data.description.slice(0,200),date_tatouage:data.date_seance,etat:''});
+    }
+    $('go').textContent='Envoi du mail au client…';
+    const mr=await sb.functions.invoke('consent-mail',{body:{id}}).catch(()=>({error:1}));
+    const mailOk=!mr.error&&mr.data&&mr.data.ok;
+    const name=`consentement-${data.client_nom}-${data.client_prenom}-${data.date_seance}.pdf`.replace(/[^\w.-]+/g,'_');
+    lastPdf={bytes,name};
+    $('f').hidden=true;$('done').hidden=false;
+    $('done').innerHTML=`<h2>Signé et archivé</h2><p><b>${mailOk?'✓ Mail envoyé à '+esc(data.email)+' avec la copie et '+(fichesOf(data).length>1?'les fiches':'la fiche')+' de soins.':'⚠ Le mail n\'est pas parti : tu pourras le renvoyer depuis le registre.'}</b></p><p>Le consentement de <b>${esc(data.client_prenom)} ${esc(data.client_nom)}</b> est enregistré dans ton registre le ${esc(signedAt.toLocaleString('fr-FR'))}.</p>
+      <p class="meta">Empreinte SHA-256 : <code>${sha}</code></p>
+      <div class="acts"><button class="btn ghost" type="button" id="share">Télécharger le PDF</button><button class="btn ghost" type="button" id="soins">Partager la fiche de soins</button><button class="btn ghost" type="button" id="again">Nouveau consentement</button></div>`;
+    $('soins').onclick=e=>shareSoins(data,e.currentTarget);
+    $('share').onclick=()=>shareOrDownload(lastPdf.bytes,lastPdf.name);
+    $('again').onclick=()=>location.reload();
+    scrollTo({top:0,behavior:'smooth'});
+  }catch(x){$('ferr').textContent='Échec, rien n\'a été perdu : réessaie. ('+x.message+')'}
+  finally{$('go').disabled=false;$('go').textContent='Signer et archiver'}
+};
+
+// registre
+let REG=[];
+async function loadReg(){
+  const {data,error}=await sb.from('consentements').select('id,created_at,prestation,client_nom,client_prenom,date_seance,mineur,pdf_path,pdf_sha256,mode,identite_verifiee_at,identite_verifiee_piece,email,email_envoye_at,email_erreur').order('created_at',{ascending:false});
+  if(error){$('list').innerHTML='<div class="empty">Impossible de charger le registre.</div>';return}
+  REG=data;renderReg();
+}
+function renderReg(){
+  const q=$('q').value.trim().toLowerCase();
+  const rows=REG.filter(r=>!q||`${r.client_prenom} ${r.client_nom}`.toLowerCase().includes(q));
+  $('list').innerHTML=rows.length?rows.map(r=>`<div class="item"><div><p><b>${esc(r.client_prenom)} ${esc(r.client_nom)}</b>${r.mineur?' · mineur':''}</p><p class="meta">${r.prestation==='tatouage'?'Tatouage':'Piercing'} · séance du ${esc(frl(parse(r.date_seance)))} · signé le ${esc(new Date(r.created_at).toLocaleString('fr-FR'))}${r.mode==='distance'?' · à distance':''}</p><p class="meta">${r.email_envoye_at?'✓ Mail envoyé le '+esc(new Date(r.email_envoye_at).toLocaleString('fr-FR')):(r.email?'Mail non envoyé':'Pas d\'e-mail')}${r.email?` <button class="btn ghost small" type="button" data-m="${esc(r.id)}">${r.email_envoye_at?'Renvoyer':'Envoyer'} le mail</button>`:''}</p>${r.mode==='distance'?(r.identite_verifiee_at?`<p class="meta">Identité vérifiée le ${esc(new Date(r.identite_verifiee_at).toLocaleString('fr-FR'))} (${esc(r.identite_verifiee_piece)})</p>`:`<p class="err" style="font-size:14px">Identité à vérifier au studio</p><div class="acts" style="margin-top:6px"><select class="vt" style="width:auto"><option>Carte d'identité</option><option>Passeport</option><option>Permis de conduire</option><option>Titre de séjour</option></select><input class="vn" maxlength="4" placeholder="4 derniers car." style="width:140px"><button class="btn small" type="button" data-v="${esc(r.id)}">Identité vérifiée</button></div>`):''}</div><button class="btn ghost small" type="button" data-p="${esc(r.id)}">Ouvrir le PDF</button></div>`).join(''):'<div class="empty">Aucun consentement signé pour le moment.</div>';
+}
+$('q').oninput=renderReg;
+$('list').onclick=async e=>{
+  const mb=e.target.closest('[data-m]');
+  if(mb){mb.disabled=true;mb.textContent='Envoi…';const r=await sb.functions.invoke('consent-mail',{body:{id:mb.dataset.m}}).catch(()=>({error:1}));if(!r.error&&r.data&&r.data.ok)loadReg();else{mb.disabled=false;mb.textContent='Échec, réessaie'}return}
+  const vb=e.target.closest('[data-v]');
+  if(vb){const box=vb.parentElement;const n=box.querySelector('.vn').value.trim().toUpperCase();if(n.length<2){box.querySelector('.vn').focus();return}
+    vb.disabled=true;const {error}=await sb.rpc('verifier_identite',{p_id:vb.dataset.v,p_piece:`${box.querySelector('.vt').value} – ${n}`});
+    if(error){vb.disabled=false;vb.textContent='Échec, réessaie';return}loadReg();return}
+  const b=e.target.closest('[data-p]');if(!b)return;const r=REG.find(x=>x.id===b.dataset.p);
+  const {data,error}=await sb.storage.from('consentements').download(r.pdf_path);if(error){b.textContent='PDF introuvable';return}
+  const buf=await data.arrayBuffer();const ok=hex(await crypto.subtle.digest('SHA-256',buf))===r.pdf_sha256;
+  b.textContent=ok?'PDF intact ✓':'Attention : PDF modifié';shareOrDownload(buf,`consentement-${r.client_nom}-${r.client_prenom}-${r.date_seance}.pdf`.replace(/[^\w.-]+/g,'_'))};
+const tab=n=>{for(const[k,t,v]of[['new','tNew','vNew'],['inv','tInv','vInv'],['reg','tReg','vReg']]){$(t).setAttribute('aria-pressed',n===k);$(v).hidden=n!==k}if(n==='reg')loadReg();if(n==='inv')loadInv()};
+$('tNew').onclick=()=>tab('new');$('tReg').onclick=()=>tab('reg');$('tInv').onclick=()=>tab('inv');
+
+// liens de consentement à distance
+const ERRS={lien_invalide:"Ce lien n'est pas valide. Demande un nouveau lien à VR Body Art.",lien_expire:'Ce lien a expiré. Demande un nouveau lien à VR Body Art.',deja_signe:'Ce consentement a déjà été signé.',mineur:"Moins de 18 ans : le consentement doit être signé au studio avec un parent.",champs_manquants:'Il manque des informations.',pdf_invalide:'Le document n\'a pas pu être créé.',stockage:'Enregistrement impossible, réessaie.',registre:'Enregistrement impossible, réessaie.'};
+const linkOf=id=>location.origin+location.pathname+'?t='+id;
+async function copyOrShare(url,prenom){const msg=`Salut${prenom?' '+prenom:''} ! Voici le lien pour remplir et signer ton consentement avant ta séance chez VR Body Art : ${url}`;
+  if(navigator.share){try{await navigator.share({text:msg});return 'partagé'}catch{}}
+  try{await navigator.clipboard.writeText(msg);return 'copié'}catch{return ''}}
+const ipresta=()=>document.querySelector('input[name=ipresta]:checked').value;
+const setPrat=()=>{if(!$('iPrat').dataset.touched)$('iPrat').value=ipresta()==='tatouage'?'Valentin Raimbaud':'Ameï Piercing'};
+document.querySelectorAll('input[name=ipresta]').forEach(r=>r.onchange=setPrat);$('iPrat').oninput=()=>$('iPrat').dataset.touched=1;
+$('iDate').value=iso(today);setPrat();
+$('iGo').onclick=async()=>{
+  if(!parse($('iDate').value)){$('ierr').textContent='Indique la date de la séance.';return}
+  $('ierr').textContent='';$('iGo').disabled=true;
+  const {data,error}=await sb.from('consent_invites').insert({prestation:ipresta(),date_seance:$('iDate').value,praticien:$('iPrat').value.trim()||null,description:$('iDesc').value.trim()||null,prenom:$('iPrenom').value.trim()||null}).select('id').single();
+  $('iGo').disabled=false;
+  if(error){$('ierr').textContent='Création impossible, réessaie.';return}
+  const url=linkOf(data.id);
+  $('iOut').hidden=false;$('iOut').innerHTML=`<p><b>Lien prêt</b> (valable 7 jours, une seule signature) :</p><p class="meta" style="word-break:break-all">${esc(url)}</p><div class="acts"><button class="btn" type="button" id="iShare">Envoyer au client</button></div>`;
+  $('iShare').onclick=async()=>{const r=await copyOrShare(url,$('iPrenom').value.trim());if(r==='copié')$('iShare').textContent='Message copié ✓'};
+  loadInv();
+};
+let INV=[];
+async function loadInv(){
+  const {data,error}=await sb.from('consent_invites').select('*').is('used_at',null).gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false});
+  if(error){$('iList').innerHTML='<div class="empty">Impossible de charger les liens.</div>';return}
+  INV=data;
+  $('iList').innerHTML=INV.length?INV.map(i=>`<div class="item"><div><p><b>${esc(i.prenom||'Client')}</b> · ${i.prestation==='tatouage'?'Tatouage':'Piercing'}</p><p class="meta">Séance du ${esc(frl(parse(i.date_seance)))} · expire le ${esc(new Date(i.expires_at).toLocaleDateString('fr-FR'))}</p></div><div class="acts"><button class="btn ghost small" type="button" data-s="${esc(i.id)}">Renvoyer</button><button class="btn ghost small" type="button" data-d="${esc(i.id)}">Annuler</button></div></div>`).join(''):'<div class="empty">Aucun lien en attente de signature.</div>';
+}
+$('iList').onclick=async e=>{
+  const s=e.target.closest('[data-s]'),d=e.target.closest('[data-d]');
+  if(s){const i=INV.find(x=>x.id===s.dataset.s);const r=await copyOrShare(linkOf(i.id),i.prenom);if(r==='copié')s.textContent='Copié ✓'}
+  if(d){d.disabled=true;await sb.from('consent_invites').delete().eq('id',d.dataset.d);loadInv()}
+};
+
+async function startRemote(){
+  $('backLink').hidden=true;$('gate').hidden=true;
+  try{
+    const r=await fetch(FN+'?t='+encodeURIComponent(TOKEN),{headers:{apikey:KEY,Authorization:'Bearer '+KEY}});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){$('remoteMsg').hidden=false;$('remoteMsg').innerHTML=`<p>${esc(ERRS[j.error]||'Lien indisponible pour le moment.')}</p>`;return}
+    document.querySelector(`input[name=presta][value=${j.prestation==='piercing'?'piercing':'tatouage'}]`).checked=true;
+    document.querySelectorAll('input[name=presta]').forEach(x=>x.disabled=true);
+    $('dSeance').value=j.date_seance;$('dSeance').readOnly=true;
+    $('praticien').value=j.praticien||'';$('praticien').dataset.touched=1;$('praticien').readOnly=true;
+    if(j.description)$('desc').value=j.description;if(j.prenom)$('prenom').value=j.prenom;
+    $('idRow').hidden=true;$('remoteId').hidden=false;$('addRetWrap').hidden=true;
+    renderTexts();$('addRetWrap').hidden=true;
+    document.querySelector('.tabs').hidden=true;$('appc').hidden=false;
+  }catch{$('remoteMsg').hidden=false;$('remoteMsg').textContent='Connexion impossible, réessaie dans un instant.'}
+}
+
+if(REMOTE)startRemote();
+else sb.auth.onAuthStateChange((ev,s)=>{UID=s?.user?.id||null;EMAIL=s?.user?.email||'';$('gate').hidden=!!s;$('appc').hidden=!s});
+}
+</script>
+</body>
+</html>
