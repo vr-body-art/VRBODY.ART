@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retouches VR Body Art</title>
+<meta name="theme-color" content="#151413">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Retouches">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+/* VOICE: carnet de studio, direct, efficace, comme un tatoueur entre deux clients
+   IDEA: la fiche de suivi épinglée au mur du studio, avec la fenêtre de retouche tracée au feutre
+   PICTURE: pour chaque client, une frise J0 → J30 avec la fenêtre J+1 mois → +2 semaines et le repère « aujourd'hui »
+   COLOUR and TYPE: encre noire, rouge flash #c8102e, jaune flash #f2b705 pour la fenêtre ouverte; Oswald + Work Sans
+   LAYOUT: bandeau noir avec le chiffre du jour, onglets, liste de fiches; une colonne sur téléphone */
+:root{color-scheme:light dark;--bg:light-dark(#faf8f5,#121110);--ink:light-dark(#151413,#f3efe9);--mut:light-dark(#6b655e,#a59d93);--line:light-dark(#e4ded6,#2c2926);--card:light-dark(#fff,#1b1917);--red:light-dark(#c8102e,#ff5a68);--gold:#f2b705;--goldsoft:light-dark(#fdf0c4,#3a2f0a);--head:#151413}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Work Sans",system-ui,sans-serif;overflow-x:clip}
+h1,h2,.num{font-family:Oswald,Impact,sans-serif;font-weight:600;line-height:1.05;margin:0}
+.band{padding:clamp(22px,4vw,48px) max(5vw,16px)}
+.wrap{max-width:1100px;margin:0 auto}
+header{background:var(--head) radial-gradient(circle at 85% 30%,#3a1a1e 0,transparent 55%);color:#f6f1ea;background-image:radial-gradient(#f2b70522 1.5px,transparent 1.6px),radial-gradient(circle at 85% 30%,#4a151c 0,transparent 60%);background-size:22px 22px,100% 100%}
+.top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:18px 40px;align-items:center}
+.art{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 18px rgb(0 0 0/.35))}
+.intro{display:grid;gap:14px}
+.brand{font:500 14px/1.3 "Work Sans",sans-serif;color:#cfc6ba;margin-bottom:8px}
+h1{font-size:clamp(32px,6vw,52px);text-wrap:balance}
+.today{display:flex;gap:14px;align-items:baseline}
+.num{font-size:clamp(56px,11vw,96px);color:var(--gold)}
+.today p{margin:0;max-width:16em;color:#e9e1d6}
+.sub{margin:-6px 0 0;color:#cfc6ba;font-size:15px}.sub:empty{display:none}
+.pol{margin:0;color:#cfc6ba;font-size:15px;max-width:60ch}
+.pol b{color:var(--gold);font-weight:600}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;flex:1 1 100%}
+.tab{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 14px;font:500 15px "Work Sans",sans-serif;min-height:44px;cursor:pointer}
+.tab[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tab span{opacity:.7;margin-left:4px}
+input,select,textarea{font:16px "Work Sans",sans-serif;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px;width:100%}
+textarea{min-height:76px;resize:vertical}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.search{flex:1 1 220px;max-width:320px}
+.btn{border:0;border-radius:10px;padding:11px 18px;min-height:44px;font:600 15px "Work Sans",sans-serif;cursor:pointer;background:var(--red);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{padding:8px 12px;min-height:40px;font-size:14px}
+.list{display:grid;gap:12px}
+.cardc{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px}
+.cardc.open{border-color:var(--gold);box-shadow:0 0 0 3px var(--goldsoft)}
+.cardc.late{border-color:color-mix(in srgb,var(--red) 45%,var(--line))}
+.who{font:600 18px/1.25 "Work Sans",sans-serif;margin:0}
+.meta{color:var(--mut);font-size:14px;margin:0}
+.badge{align-self:start;justify-self:end;white-space:nowrap;font:600 13px "Work Sans",sans-serif;padding:5px 10px;border-radius:999px;background:var(--line)}
+.b-open{background:var(--gold);color:#151413}.b-late{background:var(--red);color:#fff}.b-rdv{background:var(--ink);color:var(--bg)}
+.say{grid-column:1/-1;margin:2px 0 0;font-size:15px}
+.tl{grid-column:1/-1;position:relative;height:46px;margin:6px 0 2px}
+.tl .rail{position:absolute;left:0;right:0;top:14px;height:6px;border-radius:3px;background:var(--line)}
+.tl .win{position:absolute;top:10px;height:14px;border-radius:4px;background:var(--gold)}
+.tl .dot{position:absolute;top:9px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--ink)}
+.tl .now{position:absolute;top:2px;width:3px;height:30px;margin-left:-1.5px;background:var(--red);border-radius:2px}
+.tl .lab{position:absolute;top:30px;font-size:12px;color:var(--mut);white-space:nowrap;transform:translateX(-50%)}
+.tl .lab.l{transform:none}.tl .lab.r{transform:translateX(-100%)}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+.acts{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.empty{border:2px dashed var(--line);border-radius:14px;padding:28px;text-align:center;color:var(--mut)}
+.note{color:var(--mut);font-size:14px;margin:14px 0 0}
+.linkbtn{background:none;border:0;padding:0;color:var(--mut);text-decoration:underline;font:inherit;cursor:pointer;min-height:32px}
+.loginbox{max-width:420px;display:grid;gap:12px}.loginbox h2{font-size:30px}
+dialog{border:0;border-radius:16px;padding:0;width:min(560px,94vw);background:var(--bg);color:var(--ink)}
+dialog::backdrop{background:rgb(0 0 0/.55)}
+form{padding:22px;display:grid;gap:12px}
+form h2{font-size:30px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:grid;gap:4px;font-weight:500;font-size:15px}
+.hint{font-weight:400;color:var(--mut);font-size:13px}
+.fend{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;margin-top:4px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;display:flex;gap:12px;align-items:center;font-size:15px;z-index:9;max-width:92vw}
+.toast[hidden]{display:none}
+.toast button{background:none;border:0;color:var(--gold);font:600 15px "Work Sans",sans-serif;cursor:pointer;min-height:36px}
+@media(max-width:700px){.top{grid-template-columns:minmax(0,1fr)}.art{max-width:340px;margin:0 auto;order:-1}}
+@media(max-width:600px){.row{grid-template-columns:minmax(0,1fr)}.cardc{grid-template-columns:minmax(0,1fr)}.badge{justify-self:start;grid-row:1}.search{max-width:none}}
+@media(prefers-reduced-motion:no-preference){.cardc{animation:in .25s ease-out}@keyframes in{from{opacity:0;transform:translateY(4px)}}}
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="wrap top">
+    <div class="intro">
+      <div class="brand">VR Body Art · Clermont</div>
+      <h1>Suivi des retouches</h1>
+      <div class="today"><span class="num" id="bigNum">0</span><p id="bigTxt">RDV de retouche à fixer</p></div>
+      <p class="sub" id="bigSub"></p>
+      <p class="pol">Règle du studio : 1 mois après son tatouage, le client a <b>2 semaines pour me contacter</b> et programmer sa retouche.</p>
+    </div>
+    <svg class="art" viewBox="0 0 360 300" role="img" aria-label="Planche flash : hirondelle, rose et banderole Retouche">
+      <g transform="rotate(-4 180 150)">
+        <rect x="36" y="30" width="296" height="250" rx="6" fill="#000" opacity=".35"/>
+        <rect x="28" y="20" width="296" height="250" rx="6" fill="#f4ead8"/>
+        <g fill="#f2b705" stroke="#151413" stroke-width="2" stroke-linejoin="round">
+          <path id="st" d="M0-11 3-3 11 0 3 3 0 11-3 3-11 0-3-3Z" transform="translate(70 62)"/>
+          <use href="#st" transform="translate(220 -8) scale(.7)"/>
+          <use href="#st" transform="translate(205 160) scale(.8)"/>
+        </g>
+        <g stroke="#151413" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M175 150C190 185 230 210 282 214 256 194 232 174 216 150Z" fill="#1f4e79"/>
+          <path d="M250 148 300 126 274 152 306 172 248 157Z" fill="#1f4e79"/>
+          <path d="M110 140C125 115 175 110 210 125 230 133 245 140 256 150 220 154 180 162 140 161 124 159 112 151 110 140Z" fill="#1f4e79"/>
+          <path d="M128 152C155 166 195 164 232 152 200 168 158 170 128 152Z" fill="#f4ead8"/>
+          <path d="M150 120C166 72 215 47 288 50 252 72 228 96 206 126Z" fill="#1f4e79"/>
+          <path d="M175 104 222 70M190 112 240 82M162 96 200 64" fill="none" stroke-width="2.5"/>
+          <circle cx="112" cy="134" r="16" fill="#1f4e79"/>
+          <path d="M98 141C104 153 118 156 127 148 120 146 108 145 98 141Z" fill="#c8102e"/>
+          <path d="M97 131 81 136 97 140Z" fill="#f2b705"/>
+        </g>
+        <circle cx="107" cy="130" r="2.8" fill="#f4ead8"/>
+        <g stroke="#151413" stroke-width="3.5" stroke-linejoin="round">
+          <ellipse cx="62" cy="236" rx="24" ry="10" fill="#2f6b3a" transform="rotate(-30 62 236)"/>
+          <ellipse cx="128" cy="244" rx="22" ry="9" fill="#2f6b3a" transform="rotate(25 128 244)"/>
+          <circle cx="95" cy="214" r="31" fill="#c8102e"/>
+          <path d="M95 197C108 197 113 212 103 220 93 228 80 218 86 208 90 202 100 204 99 212" fill="none" stroke-width="3"/>
+          <path d="M70 200C76 186 88 182 95 183M120 228C114 240 102 244 92 244" fill="none" stroke-width="3"/>
+          <path d="M150 232 316 214 318 244 152 262Z" fill="#f2b705"/>
+          <path d="M150 232 134 248 152 262M316 214 334 224 318 244" fill="#d99f00"/>
+        </g>
+        <text x="234" y="246" text-anchor="middle" transform="rotate(-6 234 246)" font-family="Oswald,Impact,sans-serif" font-weight="600" font-size="24" fill="#151413" letter-spacing="1">RETOUCHE</text>
+        <circle cx="176" cy="30" r="8" fill="#c8102e" stroke="#151413" stroke-width="2.5"/>
+      </g>
+    </svg>
+  </div>
+</header>
+
+<section class="band" id="login" hidden>
+  <form class="wrap loginbox" id="lf">
+    <h2>Connexion</h2>
+    <p class="meta">Tes fiches clients sont protégées : connecte-toi pour y accéder.</p>
+    <label>E-mail<input id="lEmail" type="email" autocomplete="username" required></label>
+    <label>Mot de passe<input id="lPass" type="password" autocomplete="current-password" required minlength="6"></label>
+    <button class="btn" type="submit" id="lBtn">Se connecter</button>
+    <button class="btn ghost" type="button" id="lSignup">Première fois ? Créer mon compte</button>
+    <p class="meta" id="lMsg" role="status"></p>
+  </form>
+</section>
+<main class="band" id="app" hidden>
+  <div class="wrap">
+    <div class="bar">
+      <div class="tabs" id="tabs" role="group" aria-label="Filtrer"></div>
+      <input class="search" id="q" type="search" placeholder="Rechercher un client" aria-label="Rechercher un client">
+      <button class="btn" id="addBtn" type="button">+ Ajouter un tatouage</button>
+      <button class="btn ghost" id="expBtn" type="button">Exporter (Excel)</button>
+    </div>
+    <div class="list" id="list"></div>
+    <p class="note"><span id="status">Chargement…</span> · <button class="linkbtn" type="button" id="logout">Se déconnecter</button></p>
+  </div>
+</main>
+
+<dialog id="dlg">
+  <form id="f">
+    <h2 id="fTitle">Nouveau tatouage</h2>
+    <div class="row">
+      <label>Nom du client<input id="fNom" required autocomplete="off"></label>
+      <label>Contact <span class="hint">Snap, Insta ou téléphone</span><input id="fContact" autocomplete="off"></label>
+    </div>
+    <div class="row">
+      <label>Date du tatouage<input id="fDate" type="date" required></label>
+      <label>Tatouage <span class="hint">motif, zone</span><input id="fZone" autocomplete="off"></label>
+    </div>
+    <div class="row">
+      <label>RDV de retouche <span class="hint">si déjà fixé</span><input id="fRdv" type="date"></label>
+      <label>Heure du RDV<input id="fRdvH" type="time" step="900"></label>
+    </div>
+    <div class="row">
+      <label>Suivi
+        <select id="fEtat"><option value="">En cours</option><option value="fait">Retouche faite</option><option value="aucune">Pas besoin de retouche</option></select>
+      </label>
+      <label>M'a prévenu le <span class="hint">vide = pas encore</span><input id="fPrev" type="date"></label>
+    </div>
+    <label>Notes<textarea id="fNotes"></textarea></label>
+    <div class="fend">
+      <button class="btn ghost" type="button" id="fDel" hidden>Supprimer</button>
+      <span style="display:flex;gap:8px;margin-left:auto">
+        <button class="btn ghost" type="button" id="fCancel">Annuler</button>
+        <button class="btn" type="submit">Enregistrer</button>
+      </span>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" hidden><span id="toastTxt"></span><button type="button" id="toastBtn">Annuler</button></div>
+
+<script src="supabase.js"></script>
+<script>
+{
+const DAY=864e5, EXTRA=14;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const parse=s=>{if(!/^\d{4}-\d{2}-\d{2}$/.test(s||''))return null;const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)};
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const add=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const addMonth=d=>{const x=new Date(d.getFullYear(),d.getMonth()+1,1);x.setDate(Math.min(d.getDate(),new Date(x.getFullYear(),x.getMonth()+1,0).getDate()));return x};
+const diff=(a,b)=>Math.round((a-b)/DAY);
+const fr=d=>d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+const frl=d=>d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+const T=new Date();const today=new Date(T.getFullYear(),T.getMonth(),T.getDate());
+const S={items:[],tab:'place',q:'',edit:null};
+
+function info(c){
+  const d=parse(c.date);if(!d)return{k:'all',label:'Date manquante',cls:'',say:''};
+  const o=addMonth(d),e=add(o,EXTRA),r=parse(c.rdv);
+  const base={d,o,e,r};
+  if(c.etat==='fait')return{...base,k:'done',label:'Retouche faite',cls:'',say:'Retouche faite.'};
+  if(c.etat==='aucune')return{...base,k:'done',label:'Pas de retouche',cls:'',say:'Pas besoin de retouche.'};
+  if(r){const n=diff(r,today);return{...base,k:'rdv',label:'RDV fixé',cls:'b-rdv',say:n>=0?`Retouche prévue ${n===0?"aujourd'hui":'le '+frl(r)}${c.rdvH?' à '+c.rdvH.replace(':','h'):''}.`:`RDV du ${fr(r)} passé : retouche faite ?`}}
+  const pv=parse(c.prevenu);
+  if(pv)return{...base,pv,k:'place',label:'RDV à fixer',cls:'b-open',say:`T'a prévenu le ${frl(pv)} : il reste à fixer son RDV.`};
+  if(today<o){const n=diff(o,today);return{...base,k:'soon',label:'Trop tôt',cls:'',say:`Peut te contacter à partir du ${frl(o)} (dans ${n} jour${n>1?'s':''}).`}}
+  if(today<=e){const n=diff(e,today);return{...base,k:'open',label:'Attend son message',cls:'',say:n===0?"Dernier jour pour te contacter : c'est aujourd'hui.":`Doit te contacter d'ici le ${frl(e)} (encore ${n} jour${n>1?'s':''}).`}}
+  const n=diff(today,e);return{...base,k:'late',label:'Délai dépassé',cls:'b-late',say:`Délai dépassé depuis ${n} jour${n>1?'s':''} (fin le ${fr(e)}).`};
+}
+
+const TABS=[['place','RDV à fixer'],['open','Attend son message'],['soon','Trop tôt'],['rdv','RDV fixés'],['late','Délai dépassé'],['done','Terminés'],['all','Tous']];
+
+function timeline(i){
+  if(!i.d)return'';
+  const OPEN=diff(i.o,i.d),CLOSE=diff(i.e,i.d);
+  const span=Math.max(CLOSE+6,diff(today,i.d)+4, i.r?diff(i.r,i.d)+4:0);
+  const p=n=>Math.min(100,Math.max(0,n/span*100));
+  const nowP=p(diff(today,i.d));
+  const showNow=diff(today,i.d)>=0&&i.k!=='done';
+  return `<div class="tl" aria-hidden="true"><div class="rail"></div>
+  <div class="win" style="left:${p(OPEN)}%;width:${p(CLOSE)-p(OPEN)}%"></div>
+  <div class="dot" style="left:0%;margin-left:0"></div>
+  ${i.r?`<div class="dot" style="left:${p(diff(i.r,i.d))}%;background:var(--red)"></div>`:''}
+  ${showNow?`<div class="now" style="left:${nowP}%"></div>`:''}
+  ${p(OPEN)>=18?`<span class="lab l" style="left:0">${fr(i.d)}</span>`:''}
+  ${p(CLOSE)-p(OPEN)>=16?`<span class="lab" style="left:${p(OPEN)}%">${fr(i.o)}</span>`:''}
+  <span class="lab ${p(CLOSE)>85?'r':''}" style="left:${p(CLOSE)}%">${fr(i.e)}</span></div>`;
+}
+
+function render(){
+  const all=S.items.map(c=>({c,i:info(c)}));
+  const count=k=>all.filter(x=>k==='all'||x.i.k===k).length;
+  const nP=count('place'),nO=count('open');
+  $('bigNum').textContent=nP;
+  $('bigTxt').textContent=nP>1?'RDV de retouche à fixer':'RDV de retouche à fixer';
+  $('bigSub').textContent=nO?`${nO} client${nO>1?'s':''} dans sa fenêtre : attends son message.`:'';
+  $('tabs').innerHTML=TABS.map(([k,l])=>`<button class="tab" type="button" data-k="${k}" aria-pressed="${S.tab===k}">${l}<span>${count(k)}</span></button>`).join('');
+  const q=S.q.trim().toLowerCase();
+  const key=x=>x.i.k==='place'?x.i.pv:x.i.k==='open'?x.i.e:x.i.k==='soon'?x.i.o:x.i.k==='rdv'?x.i.r:x.i.d;
+  let rows=all.filter(x=>(S.tab==='all'||x.i.k===S.tab)&&(!q||[x.c.nom,x.c.contact,x.c.zone,x.c.notes].join(' ').toLowerCase().includes(q)));
+  rows.sort((a,b)=>{const ka=key(a)||0,kb=key(b)||0;return(S.tab==='done'||S.tab==='all'||S.tab==='late')?kb-ka:ka-kb});
+  const emptyTxt={place:"Aucun RDV à fixer : personne ne t'a prévenu pour l'instant.",open:"Personne n'est dans sa fenêtre de retouche aujourd'hui.",soon:"Aucun tatouage de moins d'un mois.",rdv:'Aucun rendez-vous de retouche fixé.',late:'Aucun délai dépassé.',done:'Rien de terminé pour le moment.',all:'Ajoute ton premier client avec « + Ajouter un tatouage ».'};
+  $('list').innerHTML=rows.length?rows.map(({c,i})=>`<article class="cardc ${i.k==='place'?'open':i.k==='late'?'late':''}">
+    <div><p class="who">${esc(c.nom)}</p><p class="meta">${[c.zone,c.contact].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</p></div>
+    <span class="badge ${i.cls}">${i.label}</span>
+    ${timeline(i)}
+    <p class="say">${esc(i.say)}</p>
+    ${c.notes?`<p class="meta say">${esc(c.notes)}</p>`:''}
+    <div class="acts">
+      ${i.k==='open'?`<button class="btn small" type="button" data-a="prev" data-id="${esc(c.id)}">✓ M'a prévenu dans les temps</button>`:''}
+      ${i.k==='place'||i.k==='late'?`<button class="btn small" type="button" data-a="rdv" data-id="${esc(c.id)}">Fixer le RDV</button>`:''}
+      ${i.k==='rdv'?`<button class="btn small" type="button" data-a="fait" data-id="${esc(c.id)}">Retouche faite</button><a class="btn small ghost" href="${esc(gcal(c))}" target="_blank" rel="noopener">Ajouter à Google Agenda</a>`:''}
+      ${i.k==='soon'||i.k==='open'?`<button class="btn small ghost" type="button" data-a="msg" data-id="${esc(c.id)}">Copier un message pour le client</button>`:''}
+      <button class="btn small ghost" type="button" data-a="edit" data-id="${esc(c.id)}">Modifier</button>
+    </div></article>`).join(''):`<div class="empty">${S.items.length||S.tab!=='all'?emptyTxt[S.tab]:emptyTxt.all}</div>`;
+}
+
+function gcal(c){
+  const d=c.rdv.replace(/-/g,'');
+  let dates;
+  if(c.rdvH){const[h,m]=c.rdvH.split(':').map(Number);const e=new Date(2000,0,1,h+1,m);const p=n=>String(n).padStart(2,'0');
+    dates=`${d}T${p(h)}${p(m)}00/${d}T${p(e.getHours())}${p(e.getMinutes())}00`;}
+  else{const x=add(parse(c.rdv),1);dates=`${d}/${iso(x).replace(/-/g,'')}`}
+  const u=new URLSearchParams({action:'TEMPLATE',text:`Retouche – ${c.nom}`,dates,ctz:'Europe/Paris',
+    details:[c.zone&&('Tatouage : '+c.zone),c.contact&&('Contact : '+c.contact),c.notes].filter(Boolean).join('\n'),
+    location:'VR Body Art, 12 rue Duguey du Fay, 60600 Clermont'});
+  return 'https://calendar.google.com/calendar/render?'+u.toString();
+}
+function openForm(c){
+  S.edit=c?c.id:null;
+  $('fTitle').textContent=c?'Modifier la fiche':'Nouveau tatouage';
+  $('fNom').value=c?.nom||'';$('fContact').value=c?.contact||'';$('fDate').value=c?.date||iso(today);
+  $('fZone').value=c?.zone||'';$('fRdv').value=c?.rdv||'';$('fRdvH').value=c?.rdvH||'';$('fPrev').value=c?.prevenu||'';$('fEtat').value=c?.etat||'';$('fNotes').value=c?.notes||'';
+  $('fDel').hidden=!c;
+  $('dlg').showModal();
+}
+
+let toastT;
+function toast(msg,undo,label='Annuler'){
+  $('toastTxt').textContent=msg;$('toastBtn').hidden=!undo;$('toastBtn').textContent=label;$('toast').hidden=false;
+  $('toastBtn').onclick=()=>{$('toast').hidden=true;undo&&undo()};
+  clearTimeout(toastT);toastT=setTimeout(()=>$('toast').hidden=true,undo&&label!=='Annuler'?12000:6000);
+}
+
+async function save(id,data){
+  const row={nom:data.nom,contact:data.contact||null,zone:data.zone||null,date_tatouage:data.date,prevenu_le:data.prevenu||null,rdv:data.rdv||null,rdv_heure:data.rdv&&data.rdvH?data.rdvH:null,etat:data.etat||'',notes:data.notes||null};
+  const exists=S.items.some(x=>x.id===id);
+  const {error}=exists?await sb.from('retouches').update(row).eq('id',id):await sb.from('retouches').insert({id,...row});
+  if(error){toast("Échec de l'enregistrement, réessaie.");return}
+  await load();
+}
+async function remove(id){
+  const {error}=await sb.from('retouches').delete().eq('id',id);
+  if(error){toast('Échec de la suppression.');return}
+  await load();
+}
+const strip=c=>{const{id,...d}=c;return d};
+const newId=()=>crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
+
+$('addBtn').onclick=()=>openForm(null);
+$('fCancel').onclick=()=>$('dlg').close();
+$('q').oninput=e=>{S.q=e.target.value;render()};
+$('tabs').onclick=e=>{const b=e.target.closest('.tab');if(b){S.tab=b.dataset.k;render()}};
+$('f').onsubmit=async e=>{
+  e.preventDefault();
+  const id=S.edit||newId();
+  const old=S.items.find(x=>x.id===id);
+  const data={nom:$('fNom').value.trim(),contact:$('fContact').value.trim(),date:$('fDate').value,zone:$('fZone').value.trim(),rdv:$('fRdv').value,rdvH:$('fRdv').value?$('fRdvH').value:'',prevenu:$('fPrev').value,etat:$('fEtat').value,notes:$('fNotes').value.trim(),cree:old?.cree||new Date().toISOString()};
+  if(!data.nom||!data.date)return;
+  $('dlg').close();
+  await save(id,data);
+  if(!old){const k=info(data).k;if(k!==S.tab&&S.tab!=='all'){S.tab=k;render()}}
+  if(data.rdv&&(!old||old.rdv!==data.rdv||old.rdvH!==data.rdvH)&&data.etat===''){toast('RDV enregistré.',()=>window.open(gcal({id,...data}),'_blank','noopener'),'Ajouter à Google Agenda');return}
+  toast(old?'Fiche mise à jour.':'Client ajouté.');
+};
+$('fDel').onclick=async()=>{
+  const c=S.items.find(x=>x.id===S.edit);if(!c)return;
+  $('dlg').close();await remove(c.id);
+  toast(`${c.nom} supprimé.`,()=>save(c.id,strip(c)));
+};
+$('list').onclick=async e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const c=S.items.find(x=>x.id===b.dataset.id);if(!c)return;
+  const a=b.dataset.a;
+  if(a==='edit')openForm(c);
+  if(a==='prev'){const prev=strip(c);await save(c.id,{...prev,prevenu:iso(today)});S.tab='place';render();toast(`${c.nom} est dans « RDV à fixer ».`,()=>save(c.id,prev))}
+  if(a==='rdv'){openForm(c);$('fRdv').focus()}
+  if(a==='fait'){const prev=strip(c);await save(c.id,{...prev,etat:'fait'});toast('Retouche marquée comme faite.',()=>save(c.id,prev))}
+  if(a==='msg'){
+    const i=info(c),p=(c.nom||'').split(' ')[0];
+    const txt=`Salut ${p} ! C'est Valentin de VR Body Art. Pour ta retouche, pense à me contacter entre le ${frl(i.o)} et le ${frl(i.e)} pour qu'on fixe un rendez-vous. À bientôt !`;
+    try{await navigator.clipboard.writeText(txt);toast('Message copié, colle-le sur Snap ou Insta.')}catch{toast(txt)}
+  }
+};
+
+const SB_URL='https://djuvwmxuplkzplahjcdm.supabase.co';
+const SB_KEY='sb_publishable_RY-y4vH1IXXm5Cto2TQe6A_SWdEJ43O';
+const sb=window.supabase.createClient(SB_URL,SB_KEY);
+async function load(){
+  const {data,error}=await sb.from('retouches').select('*').order('date_tatouage',{ascending:false});
+  if(error){$('status').textContent='Impossible de charger les fiches, vérifie ta connexion.';return}
+  S.items=data.map(r=>({id:r.id,nom:r.nom,contact:r.contact||'',zone:r.zone||'',date:r.date_tatouage,prevenu:r.prevenu_le||'',rdv:r.rdv||'',rdvH:(r.rdv_heure||'').slice(0,5),etat:r.etat||'',notes:r.notes||''}));
+  $('status').textContent=`${S.items.length} fiche${S.items.length>1?'s':''} enregistrée${S.items.length>1?'s':''}`;
+  render();
+}
+function show(logged){$('login').hidden=logged;$('app').hidden=!logged;if(logged)load();}
+$('lf').onsubmit=async e=>{
+  e.preventDefault();$('lMsg').textContent='Connexion…';
+  const {error}=await sb.auth.signInWithPassword({email:$('lEmail').value.trim(),password:$('lPass').value});
+  $('lMsg').textContent=error?'E-mail ou mot de passe incorrect.':'';
+};
+$('lSignup').onclick=async()=>{
+  const email=$('lEmail').value.trim(),password=$('lPass').value;
+  if(!email||password.length<6){$('lMsg').textContent='Mets ton e-mail et un mot de passe de 6 caractères minimum, puis reclique.';return}
+  const {data,error}=await sb.auth.signUp({email,password});
+  $('lMsg').textContent=error?'Création impossible : '+error.message:(data.session?'':'Compte créé : clique sur le lien reçu par e-mail pour le confirmer, puis reviens te connecter.');
+};
+$('logout').onclick=()=>sb.auth.signOut();
+sb.auth.onAuthStateChange((ev,session)=>show(!!session));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!$('app').hidden)load()});
+
+function csv(){
+  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const head=['Nom','Contact','Tatouage','Date du tatouage','Début fenêtre','Fin fenêtre','Statut','RDV retouche','Notes'];
+  const f=d=>d?d.toLocaleDateString('fr-FR'):'';
+  const rows=S.items.map(c=>{const i=info(c);return[c.nom,c.contact,c.zone,f(i.d),f(i.o),f(i.e),i.label,f(i.r),c.notes]});
+  return '\ufeff'+[head,...rows].map(r=>r.map(q).join(';')).join('\r\n');
+}
+$('expBtn').onclick=()=>{
+  if(!S.items.length){toast('Aucune fiche à exporter pour le moment.');return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv()],{type:'text/csv;charset=utf-8'}));
+  a.download='retouches-vr-body-art-'+iso(today)+'.csv';document.body.appendChild(a);a.click();a.remove();
+  toast('Sauvegarde téléchargée.');
+};
+render();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>

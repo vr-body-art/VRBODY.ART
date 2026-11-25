@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="112" fill="#151413"/>
+<circle cx="256" cy="256" r="196" fill="#f4ead8"/>
+<g transform="translate(46 70) scale(1.25)" stroke="#151413" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+<path d="M175 150C190 185 230 210 282 214 256 194 232 174 216 150Z" fill="#1f4e79"/>
+<path d="M250 148 300 126 274 152 306 172 248 157Z" fill="#1f4e79"/>
+<path d="M110 140C125 115 175 110 210 125 230 133 245 140 256 150 220 154 180 162 140 161 124 159 112 151 110 140Z" fill="#1f4e79"/>
+<path d="M128 152C155 166 195 164 232 152 200 168 158 170 128 152Z" fill="#f4ead8"/>
+<path d="M150 120C166 72 215 47 288 50 252 72 228 96 206 126Z" fill="#1f4e79"/>
+<circle cx="112" cy="134" r="16" fill="#1f4e79"/>
+<path d="M98 141C104 153 118 156 127 148 120 146 108 145 98 141Z" fill="#c8102e"/>
+<path d="M97 131 81 136 97 140Z" fill="#f2b705"/>
+</g>
+<circle cx="180" cy="236" r="4" fill="#f4ead8"/>
+<path d="M150 352 362 330 365 372 153 394Z" fill="#f2b705" stroke="#151413" stroke-width="6" stroke-linejoin="round"/>
+<text x="258" y="374" text-anchor="middle" transform="rotate(-6 258 366)" font-family="Oswald,Impact,Arial Black,sans-serif" font-weight="700" font-size="34" fill="#151413">RETOUCHE</text>
+</svg>
